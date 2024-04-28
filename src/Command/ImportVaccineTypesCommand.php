@@ -12,12 +12,12 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-#[AsCommand(name: 'app:import:vaccine-types', description: 'Add a short description for your command')]
+#[AsCommand(name: 'app:import:vaccine-types', description: 'Import the types os vaccines inside the database')]
 class ImportVaccineTypesCommand extends Command
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly UserRepository $userRepository,
+        private EntityManagerInterface $entityManager,
+        private UserRepository $userRepository,
     ) {
         parent::__construct();
     }
