@@ -1,0 +1,96 @@
+{% extends 'layouts/base-admin.html.twig' %}
+{% block title %}Tipos de vacina{% endblock %}
+
+{% block breadcrumbs %}
+    <li class="breadcrumb-item"><span><a href="{{ path('app_admin') }}">Dashboard</a></span></li>
+    <li class="breadcrumb-item active"><span>Tipos de vacina</span></li>
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mb-4">
+                <div class="card-body p-4">
+                    <div class="row">
+                        <div class="col">
+                            <div class="card-title fs-4 fs-semibold">Cadastro de tipos de vacinas personalizados</div>
+                        </div>
+                    </div>
+                    {% for type, messages in app.flashes %}
+                        {% for message in messages %}
+                            {% if type == 'petCreated' or type == 'petUpdated' %}
+                                 <div class="row">
+                                    <div class="col">
+                                        <div class="alert alert-success d-flex align-items-center justify-content-between" role="alert">
+                                            <div class="d-flex">
+                                                <svg class="bi flex-shrink-0 me-2" role="img" version="1.1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M9.331 21.375l-0.346-0.352-0.185-0.183-4.040-4.041 0.002-0.003-3.922-3.922 4.576-4.576 3.917 3.917 9.341-9.341 4.576 4.576-9.869 9.874zM6.872 16.79l2.459 2.459 0.005-0.005 0.003 0.003 2.452-2.452 0.528-0.533 8.811-8.811-2.454-2.454-9.341 9.341-3.917-3.917-2.454 2.454 3.912 3.912z"></path></svg>
+                                                <div><strong>{{ message }}</strong> Você pode verificar os dados abaixo.</div>
+                                            </div>
+                                            <button type="button" class="btn-close" data-coreui-dismiss="alert" aria-label="Close"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            {% if type == 'petDeleted' %}
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="alert alert-danger d-flex align-items-center justify-content-between" role="alert">
+                                            <div class="d-flex align-items-center gap-2">
+                                                <svg class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M10.655 17.030l3.97-3.97 3.97 3.97 1.061-1.061-3.97-3.97 3.97-3.97-1.061-1.061-3.97 3.97-3.97-3.97-1.061 1.061 3.97 3.97-3.97 3.97 1.061 1.061z"></path><path d="M22.125 3h-13.001c-0.321 0.001-0.611 0.135-0.816 0.351l-0 0-7.557 7.975v1.348l7.557 7.975c0.206 0.216 0.495 0.351 0.816 0.351h13.001c0.621-0.001 1.124-0.504 1.125-1.125v-15.75c-0.001-0.621-0.504-1.124-1.125-1.125h-0zM21.75 19.5h-12.465l-7.035-7.424v-0.152l7.035-7.424h12.465z"></path></svg>
+                                                <div><strong>{{ message }}</strong> Lista atualizada abaixo.</div>
+                                            </div>
+                                            <button type="button" class="btn-close" data-coreui-dismiss="alert" aria-label="Close"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                    <div class="row mt-3">
+                        <div class="col">
+                            <a href="{{ path('app_vaccines_types_create') }}" class="btn btn-primary" >Adicionar tipo personalizado</a>
+                        </div>
+                    </div>
+                    <div class="table-responsive mt-3">
+                        <table class="table border">
+                            <thead class="table-light fw-semibold">
+                                <tr class="align-middle">
+                                    <th class="text-center"><svg class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><title>eyedropper</title><path d="M22.085 2.102l-0.188-0.188c-0.72-0.72-1.714-1.165-2.813-1.165s-2.093 0.445-2.813 1.165l-3.015 3.015-2.432-2.441-1.063 1.059 2.443 2.452-9.23 9.23c-1.276 1.269-2.065 3.026-2.065 4.967 0 0.007 0 0.013 0 0.020v-0.001 1.944c0.001 0.624 0.506 1.129 1.129 1.129h1.564c0.006 0 0.012 0 0.019 0 1.941 0 3.698-0.79 4.967-2.065l9.409-9.409 2.618 2.628 1.063-1.059-2.62-2.63 0.060-0.060-0.001-0.001 2.967-2.967c0.72-0.72 1.165-1.714 1.165-2.812s-0.445-2.093-1.165-2.813v0zM7.529 20.164c-0.999 1.004-2.382 1.626-3.911 1.626-0.005 0-0.011 0-0.016-0h-1.193v-1.573c-0-0.004-0-0.010-0-0.015 0-1.528 0.622-2.911 1.626-3.91l0.876-0.876h7.366zM13.756 13.938v-0.023h-7.344l6.903-6.903 3.683 3.683zM21.024 6.667l-2.877 2.877-3.691-3.691 2.877-2.877c0.448-0.448 1.068-0.726 1.752-0.726s1.304 0.277 1.752 0.726l0.187 0.187c0.448 0.449 0.724 1.068 0.724 1.752s-0.277 1.303-0.725 1.752l0-0z"></path></svg></th>
+                                    <th>Nome</th>
+                                    <th>Descrição</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if types is not empty %}
+                                    {% for type in types %}
+                                        <tr class="align-middle">
+                                            <td class="text-center">{{ type.id }}</td>
+                                            <td>{{ type.name }}</td>
+                                            <td>{{ type.description|nl2br }}</td>
+                                            <td>
+                                                <button type="button" class="btn btn-sm btn-danger" data-coreui-toggle="modal" data-coreui-target="#vaccineTypeDeleteModal{{ type.id }}" title="Remover tipo personalizado">
+                                                    <svg class="icon text-white" version="1.1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M4.5 22.125c-0 0.003-0 0.006-0 0.008 0 0.613 0.494 1.11 1.105 1.116h12.79c0.612-0.006 1.105-0.504 1.105-1.117 0-0.003-0-0.006-0-0.009v0-15h-15zM6 8.625h12v13.125h-12z"></path><path d="M7.875 10.125h1.5v9.375h-1.5v-9.375z"></path><path d="M11.25 10.125h1.5v9.375h-1.5v-9.375z"></path><path d="M14.625 10.125h1.5v9.375h-1.5v-9.375z"></path><path d="M15.375 4.125v-2.25c0-0.631-0.445-1.125-1.013-1.125h-4.725c-0.568 0-1.013 0.494-1.013 1.125v2.25h-5.625v1.5h18v-1.5zM10.125 2.25h3.75v1.875h-3.75z"></path></svg>
+                                                </button>
+                                                {% include 'modals/delete-confirmation-modal.html.twig' with {
+                                                    type: 'vaccineType',
+                                                    id: type.id,
+                                                    name: type.name,
+                                                    deleteRoute: 'app_vaccines_types_delete'
+                                                } %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                {% else %}
+                                    <tr>
+                                        <td colspan="4" class="p-3">Não foram localizados tipos personalizados.</td>
+                                    </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

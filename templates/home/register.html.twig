@@ -1,0 +1,92 @@
+{% extends 'layouts/base-home.html.twig' %}
+{% block title %}Registro nova conta{% endblock %}
+
+{% block body %}
+<div class="bg-light min-vh-100 d-flex flex-row align-items-center">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                {% for message in app.flashes('userCreated') %}
+                    <div class="card border-top-success text-success mb-3 mx-4">
+                        <div class="card-header">Criação de conta</div>
+                        <div class="card-body">
+                            <h5 class="card-title">{{ message }}</h5>
+                            <p class="card-text">
+                                Agora precisamos validar e ativar a sua conta! Enviamos algumas informações para seu e-mail <b>{{ app.request.get('email') }}</b>, verifique sua caixa de entrada ou pasta de spam.
+                            </p>
+                            <small class="text-dark p-0 m-0">
+                                Se você não recebeu nenhum e-mail, <a class="btn-link p-0 m-0" href="#">clique aqui</a> para reenviarmos as instruções.
+                            </small>
+                        </div>
+                    </div>
+                {% endfor %}
+                <div class="card mb-4 mx-4">
+                    <div class="card-body p-4">
+                        {{ form_start(form) }}
+                            <h1>Criação de nova conta</h1>
+                            <p class="text-medium-emphasis">Preencha os dados abaixo para se cadastrar</p>
+
+                            {% for type, messages in app.flashes %}
+                                {% for message in messages %}
+                                    {% if type == 'emailExists' %}
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="alert alert-danger d-flex align-items-center justify-content-between" role="alert">
+                                                    <div class="d-flex align-items-center gap-2">
+                                                        <svg class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M19.955 4.045c-2.036-2.036-4.848-3.295-7.955-3.295-6.213 0-11.25 5.037-11.25 11.25 0 3.107 1.259 5.919 3.295 7.955v0c2.036 2.036 4.848 3.295 7.955 3.295 6.213 0 11.25-5.037 11.25-11.25 0-3.107-1.259-5.919-3.295-7.955v0zM12 2.25c0.003 0 0.006 0 0.009 0 2.431 0 4.653 0.894 6.356 2.37l-0.012-0.010-13.743 13.743c-1.466-1.691-2.36-3.913-2.36-6.344 0-0.003 0-0.006 0-0.009v0c0-5.376 4.374-9.75 9.75-9.75zM12 21.75c-0.002 0-0.005 0-0.008 0-2.419 0-4.632-0.885-6.332-2.349l0.013 0.011 13.739-13.739c1.453 1.687 2.338 3.9 2.338 6.319 0 0.003 0 0.006 0 0.009v-0c0 5.376-4.374 9.75-9.75 9.75z"></path></svg>
+                                                        <div>{{ message }}</div>
+                                                    </div>
+                                                    <button type="button" class="btn-close" data-coreui-dismiss="alert" aria-label="Close"></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+
+                            <div class="form-floating mb-3">
+                                {{ form_widget(form.username, { 'attr': { 'class': 'form-control', 'placeholder': 'username' } }) }}
+                                {{ form_label(form.username) }}
+                                <div class="form-error text-danger mt-1">
+                                    {{ form_errors(form.username) }}
+                                </div>
+                            </div>
+                            <div class="form-floating mb-3">
+                                {{ form_widget(form.email, { 'attr': { 'class': 'form-control', 'placeholder': 'email' } }) }}
+                                {{ form_label(form.email) }}
+                                <div class="form-error text-danger mt-1">
+                                    {{ form_errors(form.email) }}
+                                </div>
+                            </div>
+                            <div class="form-floating mb-3">
+                                {{ form_widget(form.password.first, { 'attr': { 'class': 'form-control', 'placeholder': 'password' } }) }}
+                                {{ form_label(form.password.first) }}
+                                <div class="form-error text-danger mt-1">
+                                    {{ form_errors(form.password.first) }}
+                                </div>
+                            </div>
+                            <div class="form-floating mb-3">
+                                {{ form_widget(form.password.second, { 'attr': { 'class': 'form-control', 'placeholder': 'repeat-password' } }) }}
+                                {{ form_label(form.password.second) }}
+                                <div class="form-error text-danger mt-1">
+                                    {{ form_errors(form.password.second) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4">
+                                    <button class="btn btn-block btn-success text-white" type="submit">Criar conta grátis</button>
+                                </div>
+                                <div class="col-8 text-end">
+                                    <div class="d-flex flex-row justify-content-end align-items-center gap-1">
+                                        Já possui uma conta? Faça <a href="{{ path('app_login') }}" class="btn btn-link text-decoration-none px-0">Login aqui</a>
+                                    </div>
+                                </div>
+                            </div>
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

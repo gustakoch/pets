@@ -1,0 +1,17 @@
+<div class="modal fade" id="{{ type }}DeleteModal{{ id }}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-bottom-0 p-4">
+                <h5 class="modal-title">Deseja realmente remover <b>{{ name }}</b>?</h5>
+                <button type="button" class="btn-close" data-coreui-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4 text-danger">
+                <div class="small">Esta ação não poderá ser desfeita.</div>
+            </div>
+            <div class="modal-footer border-top-0 p-4">
+                <button type="button" class="btn btn-primary text-white" data-coreui-dismiss="modal">Cancelar</button>
+                <a href="{{ path(deleteRoute, {id: id}) }}" class="btn btn-danger text-white">Remover</a>
+            </div>
+        </div>
+    </div>
+</div>

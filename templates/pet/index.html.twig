@@ -1,0 +1,197 @@
+{% extends 'layouts/base-admin.html.twig' %}
+{% block title %}Cadastro de pets{% endblock %}
+
+{% block breadcrumbs %}
+    <li class="breadcrumb-item"><span><a href="{{ path('app_admin') }}">Dashboard</a></span></li>
+    <li class="breadcrumb-item active"><span>Pets</span></li>
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mb-4">
+                <div class="card-body p-4">
+                    <div class="row">
+                        <div class="col">
+                            <div class="card-title fs-4 fs-semibold">Pets</div>
+                        </div>
+                    </div>
+                    {{ form_start(form, {'attr': {'id': 'form-pet-filters', 'class': 'mb-3'}}) }}
+                        <div class="row mt-3">
+                            <div class="col">
+                                <div class="form-floating">
+                                    <div class="form-floating mb-3">
+                                        {{ form_widget(form.name, { 'attr': { 'class': 'form-control', 'placeholder': 'name' } }) }}
+                                        {{ form_label(form.name) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-floating">
+                                    {{ form_widget(form.specie, { 'attr': { 'class': 'form-control', 'placeholder': 'specie' } }) }}
+                                    {{ form_label(form.specie) }}
+                                </div>
+                            </div>
+                            <div class="col mt-2">
+                                <button type="submit" class="btn btn-primary">Buscar pets</button>
+                                <a href="{{ path('app_pets') }}" type="submit" class="btn btn-primary btn-clear-filters">Limpar busca</a>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col">
+                                <a href="{{ path('app_pets_create') }}" class="btn btn-primary" >Adicionar pet</a>
+                            </div>
+                        </div>
+                    {{ form_end(form, {'render_rest': false}) }}
+
+                    {% for type, messages in app.flashes %}
+                        {% for message in messages %}
+                            {% if type == 'petCreated' or type == 'petUpdated' %}
+                                 <div class="row">
+                                    <div class="col">
+                                        <div class="alert alert-success d-flex align-items-center justify-content-between" role="alert">
+                                            <div class="d-flex">
+                                                <svg class="bi flex-shrink-0 me-2" role="img" version="1.1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M9.331 21.375l-0.346-0.352-0.185-0.183-4.040-4.041 0.002-0.003-3.922-3.922 4.576-4.576 3.917 3.917 9.341-9.341 4.576 4.576-9.869 9.874zM6.872 16.79l2.459 2.459 0.005-0.005 0.003 0.003 2.452-2.452 0.528-0.533 8.811-8.811-2.454-2.454-9.341 9.341-3.917-3.917-2.454 2.454 3.912 3.912z"></path></svg>
+                                                <div><strong>{{ message }}</strong> Você pode verificar os dados abaixo.</div>
+                                            </div>
+                                            <button type="button" class="btn-close" data-coreui-dismiss="alert" aria-label="Close"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            {% if type == 'petDeleted' %}
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="alert alert-danger d-flex align-items-center justify-content-between" role="alert">
+                                            <div class="d-flex align-items-center gap-2">
+                                                <svg class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M10.655 17.030l3.97-3.97 3.97 3.97 1.061-1.061-3.97-3.97 3.97-3.97-1.061-1.061-3.97 3.97-3.97-3.97-1.061 1.061 3.97 3.97-3.97 3.97 1.061 1.061z"></path><path d="M22.125 3h-13.001c-0.321 0.001-0.611 0.135-0.816 0.351l-0 0-7.557 7.975v1.348l7.557 7.975c0.206 0.216 0.495 0.351 0.816 0.351h13.001c0.621-0.001 1.124-0.504 1.125-1.125v-15.75c-0.001-0.621-0.504-1.124-1.125-1.125h-0zM21.75 19.5h-12.465l-7.035-7.424v-0.152l7.035-7.424h12.465z"></path></svg>
+                                                <div><strong>{{ message }}</strong> Lista atualizada abaixo.</div>
+                                            </div>
+                                            <button type="button" class="btn-close" data-coreui-dismiss="alert" aria-label="Close"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+
+                    <div class="table-responsive">
+                        <table class="table border">
+                            <thead class="table-light fw-semibold">
+                                <tr class="align-middle">
+                                    <th class="text-center"><svg class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M18.436 7.562l-2.755-3.979c-0.406-0.58-1.066-0.957-1.816-0.969l-0.002-0-5.239-0.075c-2.699 0-4.77 0.451-6.104 2.655-1.242 2.051-1.771 5.545-1.771 11.682v0.75h1.714l-1.103 5.625h1.529l1.103-5.625h0.508c0.012 0 0.027 0 0.042 0 1.261 0 2.405-0.5 3.245-1.314l-0.001 0.001c0.796-0.762 1.37-1.803 1.66-3.013l0.003-0.011 1.286-6.164h-1.532l-1.218 5.835c-0.371 1.532-1.48 3.165-3.485 3.165h-2.247c0.041-5.309 0.524-8.457 1.552-10.155 0.863-1.425 2.123-1.931 4.815-1.932l5.222 0.075c0.25 0.004 0.471 0.13 0.604 0.321l0.002 0.002 3.116 4.501 4.186 0.698v0.795l-0.698 3.723c-0.206 1.099-0.558 1.652-2.002 1.826l-5.921 1.013-0.039 6.258h1.5l0.031-4.992 4.627-0.792c1.048-0.129 1.821-0.467 2.364-1.032 0.464-0.484 0.746-1.102 0.915-2.004l0.724-3.86v-2.205z"></path></svg></th>
+                                    <th>Nome</th>
+                                    <th>Raça</th>
+                                    <th>Cor</th>
+                                    <th>Espécie</th>
+                                    <th>Data de nascimento</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if pager is not empty %}
+                                    {% for pet in pager %}
+                                        <tr class="align-middle">
+                                            <td class="text-center">
+                                                {% if pet.imagePath %}
+                                                    <div class="avatar avatar-lg">
+                                                        <img class="avatar-on-list" src="{{ pet.imagePath }}" alt="{{ pet.name }}" />
+                                                    </div>
+                                                {% else %}
+                                                    <div class="avatar avatar-lg bg-primary text-white">
+                                                        {{ pet.extractFirstTwoInitials(pet.name) }}
+                                                    </div>
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ pet.name }}</td>
+                                            <td>{{ pet.breed }}</td>
+                                            <td>{{ pet.color }}</td>
+                                            <td>{{ pet.specie.name }}</td>
+                                            <td>
+                                                <div class="fw-semibold">{{ pet.dateOfBirth|date('d/m/Y') }}</div>
+                                                <div class="small text-medium-emphasis">{{ pet.getCurrentAge(pet.dateOfBirth) }}</div>
+                                            </td>
+                                            <td>
+                                                <a class="btn btn-sm btn-success" href="{{ path('app_pets_show', {'id': pet.id}) }}" title="Ver informações do pet">
+                                                    <svg class="icon icon-sm text-white" version="1.1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 4.5h1.637v1.637h-1.637v-1.637z"></path><path d="M0.75 0.75v22.5h22.5v-22.5zM21.75 21.75h-19.5v-19.5h19.5z"></path><path d="M10.512 9.508c0.127-0.301 0.42-0.508 0.761-0.508 0.455 0 0.824 0.369 0.824 0.824 0 0.083-0.012 0.163-0.035 0.238l0.002-0.006-1.672 5.685c-0.061 0.198-0.095 0.426-0.095 0.662 0 1.296 1.051 2.347 2.347 2.347v0c0.86-0.002 1.612-0.464 2.021-1.154l0.006-0.011 0.708-1.215-1.296-0.755-0.708 1.215c-0.15 0.253-0.421 0.42-0.731 0.42h-0c-0 0-0 0-0 0-0.468 0-0.847-0.379-0.847-0.847 0-0.085 0.013-0.167 0.036-0.245l-0.002 0.006 1.672-5.685c0.060-0.196 0.094-0.422 0.094-0.656 0-1.283-1.040-2.324-2.324-2.324-0.962 0-1.788 0.585-2.141 1.418l-0.006 0.015-0.549 1.323 1.385 0.575z"></path></svg>
+                                                </a>
+                                                <a class="btn btn-sm btn-info" href="{{ path('app_pets_edit', {'id': pet.id}) }}" title="Editar pet">
+                                                    <svg class="icon text-white" version="1.1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M15.686 0.75h-13.436v22.5h19.875v-16.061zM20.625 7.811v0.064h-5.625v-5.625h0.064zM3.75 21.75v-19.5h9.75v7.125h7.125v12.375z"></path><path d="M6.375 13.875h10.5v1.5h-10.5v-1.5z"></path><path d="M6.375 17.625h10.5v1.5h-10.5v-1.5z"></path></svg>
+                                                </a>
+                                                <button type="button" class="btn btn-sm btn-danger" data-coreui-toggle="modal" data-coreui-target="#petDeleteModal{{ pet.id }}" title="Remover pet">
+                                                    <svg class="icon text-white" version="1.1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M4.5 22.125c-0 0.003-0 0.006-0 0.008 0 0.613 0.494 1.11 1.105 1.116h12.79c0.612-0.006 1.105-0.504 1.105-1.117 0-0.003-0-0.006-0-0.009v0-15h-15zM6 8.625h12v13.125h-12z"></path><path d="M7.875 10.125h1.5v9.375h-1.5v-9.375z"></path><path d="M11.25 10.125h1.5v9.375h-1.5v-9.375z"></path><path d="M14.625 10.125h1.5v9.375h-1.5v-9.375z"></path><path d="M15.375 4.125v-2.25c0-0.631-0.445-1.125-1.013-1.125h-4.725c-0.568 0-1.013 0.494-1.013 1.125v2.25h-5.625v1.5h18v-1.5zM10.125 2.25h3.75v1.875h-3.75z"></path></svg>
+                                                </button>
+                                                {% include 'modals/delete-confirmation-modal.html.twig' with {
+                                                    type: 'pet',
+                                                    id: pet.id,
+                                                    name: pet.name,
+                                                    deleteRoute: 'app_pets_delete'
+                                                } %}
+                                            </td>
+                                        </tr>
+
+                                    {% endfor %}
+                                {% else %}
+                                    <tr>
+                                        <td class="p-3" colspan="9">Não foram localizados pets.</td>
+                                    </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <div class="col d-flex justify-content-center align-items-center">
+                            {% if pager is not empty %}
+                                {{ pagerfanta(pager, {'prev_message': '<', 'next_message': '>'}) }}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function() {
+            $('.btn-veterinarian-info').on('click', function(e) {
+                e.preventDefault();
+                let petId = $(this).attr('id');
+                $('.modal-body-veterinarian-info').text('');
+                $.ajax({
+                    url: `/admin/pets/veterinarian-info/${petId}`,
+                    method: 'GET',
+                    dataType: 'json',
+                    beforeSend: function() {
+                        $('.box-spinner-veterinarian-info').show();
+                        $('.modal-body-veterinarian-info').hide();
+                    },
+                    success: function(response) {
+                        if (response.ok) {
+                            $.each(response.data, function(i, veterinarian) {
+                                let veterinarianDetails = $('<div>');
+                                veterinarianDetails.append($('<div class="h3 m-0">').text(veterinarian.name));
+                                veterinarianDetails.append($('<div class="lead">').text(veterinarian.email));
+                                veterinarianDetails.append($('<div class="lead mb-3 fw-medium">').text(veterinarian.phone));
+                                let specializationsHtml = veterinarian.specializations.replace(/\n/g, ', ');
+                                veterinarianDetails.append($('<div class="lead">').html(specializationsHtml));
+                                if (i < response.data.length - 1) {
+                                    veterinarianDetails.append($('<hr>'));
+                                }
+                                $('.modal-body-veterinarian-info').append(veterinarianDetails);
+                            });
+                            $('.box-spinner-veterinarian-info').hide();
+                            $('.modal-body-veterinarian-info').show();
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        $('.box-spinner-veterinarian-info').hide();
+                        $('.modal-body-veterinarian-info').show();
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}

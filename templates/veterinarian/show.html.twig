@@ -1,0 +1,96 @@
+{% extends 'layouts/base-admin.html.twig' %}
+{% block title %}Exibindo veterinário{% endblock %}
+
+{% block breadcrumbs %}
+    <li class="breadcrumb-item"><span><a href="{{ path('app_admin') }}">Dashboard</a></span></li>
+    <li class="breadcrumb-item"><span><a href="{{ path('app_vets') }}">Veterinários</a></span></li>
+    <li class="breadcrumb-item active"><span>{{ veterinarian.name }}</span></li>
+{% endblock %}
+
+{% set phone = veterinarian.phone|replace({'(': '', ')': '', ' ': '', '-': '', '+': ''}) %}
+{% if phone[:2] != '55' %}
+    {% set phone = '55' ~ phone %}
+{% endif %}
+{% set whatsappLink = 'https://wa.me/' ~ phone %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mb-4">
+                <div class="card-body p-4">
+                    <div class="row mb-3">
+                        <div class="col">
+                            <div class="card-title fs-4 fs-semibold">Informações sobre <b>{{ veterinarian.name }}</b></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h6 class="card-title">Nome do veterinário</h6>
+                                    <p class="card-text">{{ veterinarian.name }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h6 class="card-title">E-mail</h6>
+                                    <p class="card-text">{{ veterinarian.email ?? '-' }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h6 class="card-title">Telefone/WhatsApp</h6>
+                                    <p class="card-text d-flex align-items-center gap-3">
+                                        {% if veterinarian.isPhoneWhatsapp %}
+                                            {{ veterinarian.phone }}
+                                            <a class="btn-link text-info" href="{{ whatsappLink }}?text=Olá, {{veterinarian.name}}, tudo bem? Preciso da sua ajuda." title="Chamar no WhatsApp" target="_blank">
+                                                <svg class="icon icon-lg" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs><style>.cls-1{fill:url(#linear-gradient);}.cls-2{fill:#fff;}</style><linearGradient gradientUnits="userSpaceOnUse" id="linear-gradient" x1="32" x2="32" y1="4" y2="64.81"><stop offset="0" stop-color="#1df47c"/><stop offset="0.31" stop-color="#12df63"/><stop offset="0.75" stop-color="#05c443"/><stop offset="1" stop-color="#00ba37"/></linearGradient></defs><title/><g data-name="23-whatsapp" id="_23-whatsapp"><rect class="cls-1" height="64" rx="11.2" ry="11.2" width="64"/><path class="cls-2" d="M27.42,21.38l2,5.43a.76.76,0,0,1-.1.74,10.32,10.32,0,0,1-1.48,1.71.8.8,0,0,0-.16,1.09C28.91,32,32.1,36,36.25,37.43a.79.79,0,0,0,.89-.29l1.66-2.21a.8.8,0,0,1,1-.23L45,37.3a.79.79,0,0,1,.4,1c-.57,1.62-2.36,5.57-6.19,4.93A20.79,20.79,0,0,1,26.4,36c-3.14-3.92-9.34-14,.19-15.14A.8.8,0,0,1,27.42,21.38Z"/><path class="cls-2" d="M33.6,54.8a24.21,24.21,0,0,1-11.94-3.13l-12,3.08,4.41-9.91A22,22,0,0,1,10,32C10,19.43,20.59,9.2,33.6,9.2S57.2,19.43,57.2,32,46.61,54.8,33.6,54.8ZM22.29,47.37l.73.45a20.13,20.13,0,0,0,10.58,3c10.81,0,19.6-8.43,19.6-18.8S44.41,13.2,33.6,13.2,14,21.63,14,32a18.13,18.13,0,0,0,4,11.34l.75.95-3.61,6.12Z"/></g></svg>
+                                            </a>
+                                        {% else %}
+                                            {{ veterinarian.phone }}
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h6 class="card-title">Descrição das especializações</h6>
+                                    <p class="card-text">{{ veterinarian.specializations|nl2br }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h6 class="card-title">Endereço completo</h6>
+                                    <p class="card-text">
+                                        <div>
+                                            {{ veterinarian.address.street }}, {{ veterinarian.address.number }} {{ veterinarian.address.complement }} <br />
+                                            {{ veterinarian.address.district }}, {{ veterinarian.address.city.name }}, {{ veterinarian.address.state.name }} ({{ veterinarian.address.state.acronym }}) <br />
+                                            CEP {{ veterinarian.address.zipcode }}
+                                        </div>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="{{ path('app_vets') }}" class="btn btn-primary text-white mt-4">
+                        <svg class="icon text-white" version="1.1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M23.312 11.25h-19.558l4.5-4.5-1.061-1.061-6.31 6.31 6.31 6.31 1.061-1.061-4.5-4.5h19.558v-1.5z"></path></svg>&nbsp;
+                        Lista de veterinários
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

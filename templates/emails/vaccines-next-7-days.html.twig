@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Aviso de reforço de vacina</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #f4f4f4;
+            }
+            .container {
+                max-width: 100%;
+                margin: 0 auto;
+                padding: 20px;
+                background-color: #ffffff;
+                border-radius: 8px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+            .header {
+                background-color: #f9b115;
+                padding: 20px;
+                text-align: center;
+                border-top-left-radius: 8px;
+                border-top-right-radius: 8px;
+                color: #fff;
+            }
+            .header img {
+                width: 80px;
+                height: auto;
+            }
+            .btn {
+                display: inline-block;
+                background-color: #f9b115;
+                color: #ffffff;
+                text-decoration: none;
+                padding: 10px 20px;
+                border-radius: 5px;
+                transition: all 0.2s;
+            }
+            .text-white {
+                color: #fff;
+            }
+            .vaccine {
+                margin-bottom: 20px;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                background-color: #f9f9f9;
+            }
+            .vaccine-title {
+                font-weight: bold;
+                margin-bottom: 10px;
+            }
+            .vaccine-details {
+                list-style: none;
+                padding-left: 0;
+            }
+            .vaccine-details li {
+                margin-bottom: 5px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <svg width="32" version="1.1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><title>eyedropper</title><path d="M22.085 2.102l-0.188-0.188c-0.72-0.72-1.714-1.165-2.813-1.165s-2.093 0.445-2.813 1.165l-3.015 3.015-2.432-2.441-1.063 1.059 2.443 2.452-9.23 9.23c-1.276 1.269-2.065 3.026-2.065 4.967 0 0.007 0 0.013 0 0.020v-0.001 1.944c0.001 0.624 0.506 1.129 1.129 1.129h1.564c0.006 0 0.012 0 0.019 0 1.941 0 3.698-0.79 4.967-2.065l9.409-9.409 2.618 2.628 1.063-1.059-2.62-2.63 0.060-0.060-0.001-0.001 2.967-2.967c0.72-0.72 1.165-1.714 1.165-2.812s-0.445-2.093-1.165-2.813v0zM7.529 20.164c-0.999 1.004-2.382 1.626-3.911 1.626-0.005 0-0.011 0-0.016-0h-1.193v-1.573c-0-0.004-0-0.010-0-0.015 0-1.528 0.622-2.911 1.626-3.91l0.876-0.876h7.366zM13.756 13.938v-0.023h-7.344l6.903-6.903 3.683 3.683zM21.024 6.667l-2.877 2.877-3.691-3.691 2.877-2.877c0.448-0.448 1.068-0.726 1.752-0.726s1.304 0.277 1.752 0.726l0.187 0.187c0.448 0.449 0.724 1.068 0.724 1.752s-0.277 1.303-0.725 1.752l0-0z"></path></svg>
+            </div>
+            <h1>Reforço de vacina próximo</h1>
+            <p>Olá {{ user.username }}!</p>
+            <p>Informamos que as seguintes vacinas registradas no Pets<b>Control</b> estão próximas da data de reforço.</p>
+            {% for vaccine in vaccines %}
+                <div class="vaccine">
+                    <div class="vaccine-title">Vacina {{ vaccine.name }}</div>
+                    <ul class="vaccine-details">
+                        <li><strong>Data de reforço:</strong> {{ vaccine.reinforcementAt|date('d/m/Y') }}</li>
+                        <li><strong>Foi aplicada no pet:</strong> {{ vaccine.pet.name }}</li>
+                        <li><strong>Veterinário que aplicou:</strong> {{ vaccine.veterinarian.name }}</li>
+                    </ul>
+                </div>
+            {% endfor %}
+            <p><a href="{{ loginUrl }}" target="_blank">Clique aqui</a> para acessar a nossa plataforma.</p>
+            <p>Por favor, entre em contato conosco se precisar de mais informações em <a href="mailto:pets@gustakoch.com.br">pets@gustakoch.com.br</a>.</p>
+            <p>
+                Atenciosamente, <br />
+                Equipe Pets<b>Control</b>
+            </p>
+        </div>
+    </body>
+</html>

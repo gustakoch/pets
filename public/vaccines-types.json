@@ -1,0 +1,54 @@
+[
+    {
+        "name": "Raiva",
+        "description": "Protege contra a raiva, uma doença viral grave que pode ser transmitida para humanos através da mordida de um animal infectado."
+    },
+    {
+        "name": "Quádrupla",
+        "description": "Protege contra rinotraqueíte, calicivirose, panleucopenia e clamidiose."
+    },
+    {
+        "name": "Leucemia",
+        "description": "Protege contra o vírus da leucemia felina, uma doença viral grave que afeta o sistema imunológico dos gatos."
+    },
+    {
+        "name": "Rinotraqueíte",
+        "description": "Protege contra o herpesvírus felino tipo 1, que pode causar infecções respiratórias e oculares em gatos."
+    },
+    {
+        "name": "Calicivirose",
+        "description": "Protege contra o calicivírus felino, uma das causas da gripe felina."
+    },
+    {
+        "name": "Bordetella",
+        "description": "Vacina contra a tosse dos canis (Bordetella), uma doença respiratória contagiosa em cães."
+    },
+    {
+        "name": "Gripe Canina",
+        "description": "Vacina contra a gripe canina (Influenza canina), uma doença respiratória contagiosa em cães."
+    },
+    {
+        "name": "Doença de Lyme",
+        "description": "Vacina contra a doença de Lyme, uma doença transmitida por carrapatos."
+    },
+    {
+        "name": "Giardíase",
+        "description": "Vacina contra a giardíase, uma doença intestinal parasitária em cães."
+    },
+    {
+        "name": "Clamidiose",
+        "description": "Vacina contra a clamidiose, uma doença bacteriana que pode afetar os olhos e o trato respiratório dos gatos."
+    },
+    {
+        "name": "Peritonite Infecciosa Felina (PIF)",
+        "description": "Vacina contra a peritonite infecciosa felina (PIF), uma doença viral que afeta os gatos."
+    },
+    {
+        "name": "Doença do Carrapato",
+        "description": "Vacina contra a doença do carrapato, que protege contra as doenças transmitidas por carrapatos em gatos."
+    },
+    {
+        "name": "Leptospirose",
+        "description": "Vacina contra a leptospirose, uma doença bacteriana que pode afetar os cães e, em algumas regiões, os gatos."
+    }
+]

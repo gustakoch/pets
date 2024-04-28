@@ -1,0 +1,33 @@
+{% extends 'layouts/base-admin.html.twig' %}
+{% block title %}Medicamentos{% endblock %}
+
+{% block breadcrumbs %}
+    <li class="breadcrumb-item"><span><a href="{{ path('app_admin') }}">Dashboard</a></span></li>
+    <li class="breadcrumb-item active"><span>Medicamentos</span></li>
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mb-4">
+                <div class="card-body p-4">
+                    <div class="row">
+                        <div class="col">
+                            <div class="card-title fs-4 fs-semibold">Medicamentos</div>
+                            <div class="card-subtitle">Clique no botão abaixo para iniciar os medicamentos.</div>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <button type="button" class="btn btn-primary text-white"
+                            data-coreui-toggle="modal"
+                            data-coreui-target="#launchMedicinesModal" title="Iniciar medicamentos">
+                          Iniciar medicamentos
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% include 'medicine/modals/launch-medicines.html.twig' %}
+{% endblock %}

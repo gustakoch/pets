@@ -1,0 +1,133 @@
+{% extends 'layouts/base-admin.html.twig' %}
+{% block title %}Exibindo vacina{% endblock %}
+
+{% block breadcrumbs %}
+    <li class="breadcrumb-item"><span><a href="{{ path('app_admin') }}">Dashboard</a></span></li>
+    <li class="breadcrumb-item"><span><a href="{{ path('app_vaccines') }}">Vacinas</a></span></li>
+    <li class="breadcrumb-item active"><span>{{ vaccine.name }}</span></li>
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mb-4">
+                <div class="card-body p-4">
+                    <div class="row mb-3">
+                        <div class="col">
+                            <div class="card-title fs-4 fs-semibold">Informações sobre <b>{{ vaccine.name }}</b></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h6 class="card-title">Descrição da vacina</h6>
+                                    <p class="card-text">{{ vaccine.description ? vaccine.description|nl2br : '-' }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col d-flex gap-3">
+                            <div class="card" style="width: 18rem;">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <h6 class="card-title">Tipo de vacina</h6>
+                                        <button type="button" class="btn btn-sm btn-info"
+                                            data-coreui-toggle="popover" data-coreui-placement="right"
+                                            data-coreui-custom-class="custom-info-popover"
+                                            data-coreui-trigger="hover focus"
+                                            data-coreui-title="{{ vaccine.type.name }}"
+                                            data-coreui-content="{{ vaccine.type.description }}">
+                                          <svg class="icon icon-sm text-white" version="1.1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 4.5h1.637v1.637h-1.637v-1.637z"></path><path d="M0.75 0.75v22.5h22.5v-22.5zM21.75 21.75h-19.5v-19.5h19.5z"></path><path d="M10.512 9.508c0.127-0.301 0.42-0.508 0.761-0.508 0.455 0 0.824 0.369 0.824 0.824 0 0.083-0.012 0.163-0.035 0.238l0.002-0.006-1.672 5.685c-0.061 0.198-0.095 0.426-0.095 0.662 0 1.296 1.051 2.347 2.347 2.347v0c0.86-0.002 1.612-0.464 2.021-1.154l0.006-0.011 0.708-1.215-1.296-0.755-0.708 1.215c-0.15 0.253-0.421 0.42-0.731 0.42h-0c-0 0-0 0-0 0-0.468 0-0.847-0.379-0.847-0.847 0-0.085 0.013-0.167 0.036-0.245l-0.002 0.006 1.672-5.685c0.060-0.196 0.094-0.422 0.094-0.656 0-1.283-1.040-2.324-2.324-2.324-0.962 0-1.788 0.585-2.141 1.418l-0.006 0.015-0.549 1.323 1.385 0.575z"></path></svg>
+                                        </button>
+                                    </div>
+                                    <p class="card-text">{{ vaccine.type.name }}</p>
+                                </div>
+                            </div>
+                            <div class="card" style="width: 18rem;">
+                                <div class="card-body">
+                                    <h6 class="card-title">Pet que recebeu a vacina</h6>
+                                    <p class="card-text">{{ vaccine.pet.name }} ({{ vaccine.pet.breed }})</p>
+                                </div>
+                            </div>
+                            <div class="card" style="width: 18rem;">
+                                <div class="card-body">
+                                    <h6 class="card-title">Veterinário que aplicou</h6>
+                                    <p class="card-text">{{ vaccine.veterinarian.name }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col d-flex gap-3">
+                            <div class="card" style="width: 18rem;">
+                                <div class="card-body">
+                                    <h6 class="card-title">Data da aplicação</h6>
+                                    <p class="card-text">{{ vaccine.applicationDate|date('d/m/Y') }}</p>
+                                </div>
+                            </div>
+                            <div class="card" style="width: 18rem;">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <h6 class="card-title">Data do reforço</h6>
+                                        <button type="button" class="btn btn-sm btn-info"
+                                            data-coreui-toggle="popover" data-coreui-placement="right"
+                                            data-coreui-custom-class="custom-info-popover"
+                                            data-coreui-trigger="hover focus"
+                                            data-coreui-title="Lembrete"
+                                            data-coreui-content="O sistema envia uma mensagem via e-mail 7 (sete) dias antes da data de reforço.">
+                                          <svg class="icon icon-sm text-white" version="1.1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 4.5h1.637v1.637h-1.637v-1.637z"></path><path d="M0.75 0.75v22.5h22.5v-22.5zM21.75 21.75h-19.5v-19.5h19.5z"></path><path d="M10.512 9.508c0.127-0.301 0.42-0.508 0.761-0.508 0.455 0 0.824 0.369 0.824 0.824 0 0.083-0.012 0.163-0.035 0.238l0.002-0.006-1.672 5.685c-0.061 0.198-0.095 0.426-0.095 0.662 0 1.296 1.051 2.347 2.347 2.347v0c0.86-0.002 1.612-0.464 2.021-1.154l0.006-0.011 0.708-1.215-1.296-0.755-0.708 1.215c-0.15 0.253-0.421 0.42-0.731 0.42h-0c-0 0-0 0-0 0-0.468 0-0.847-0.379-0.847-0.847 0-0.085 0.013-0.167 0.036-0.245l-0.002 0.006 1.672-5.685c0.060-0.196 0.094-0.422 0.094-0.656 0-1.283-1.040-2.324-2.324-2.324-0.962 0-1.788 0.585-2.141 1.418l-0.006 0.015-0.549 1.323 1.385 0.575z"></path></svg>
+                                        </button>
+                                    </div>
+                                    <p class="card-text">{{ vaccine.reinforcementAt|date('d/m/Y') }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col d-flex gap-3">
+                            <div class="card" style="width: 18rem;">
+                                <div class="card-body">
+                                    <h6 class="card-title">Preço pago</h6>
+                                    <p class="card-text">{{ vaccine.price|number_format(2, ',', '.') }}</p>
+                                </div>
+                            </div>
+                            <div class="card" style="width: 18rem;">
+                                <div class="card-body">
+                                    <h6 class="card-title">Fabricante da vacina</h6>
+                                    <p class="card-text">{{ vaccine.manufacturer }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h6 class="card-title">Observações gerais</h6>
+                                    <p class="card-text">{{ vaccine.comments ? vaccine.comments|nl2br : '-' }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="{{ path('app_vaccines') }}" class="btn btn-primary text-white mt-3">
+                        <svg class="icon text-white" version="1.1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M23.312 11.25h-19.558l4.5-4.5-1.061-1.061-6.31 6.31 6.31 6.31 1.061-1.061-4.5-4.5h19.558v-1.5z"></path></svg>&nbsp;
+                        Lista de vacinas
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent( )}}
+
+    <script>
+        $(document).ready(function() {
+            $('#vaccine_price').mask('000,00');
+        });
+    </script>
+{% endblock %}

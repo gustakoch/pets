@@ -1,0 +1,106 @@
+{% extends 'layouts/base-admin.html.twig' %}
+{% block title %}Usuários{% endblock %}
+
+{% block breadcrumbs %}
+    <li class="breadcrumb-item"><span><a href="{{ path('app_admin') }}">Dashboard</a></span></li>
+    <li class="breadcrumb-item active"><span>Usuários</span></li>
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mb-4">
+                <div class="card-body p-4">
+                    <div class="row mb-3">
+                        <div class="col">
+                            <div class="card-title fs-4 fs-semibold">Usuários</div>
+                            <div class="card-subtitle text-disabled mb-4">{{ pager|length }} usuários registrados</div>
+                        </div>
+                        <div class="col-auto ms-auto">
+                            <a href="{{ path('app_users_create') }}" class="btn btn-primary">Adicionar usuário</a>
+                        </div>
+                    </div>
+
+                    {% for type, messages in app.flashes %}
+                        {% for message in messages %}
+                            {% if type == 'userCreated' or type == 'userUpdated' %}
+                                 <div class="row">
+                                    <div class="col">
+                                        <div class="alert alert-success d-flex align-items-center justify-content-between" role="alert">
+                                            <div class="d-flex">
+                                                <svg class="bi flex-shrink-0 me-2" role="img" version="1.1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M9.331 21.375l-0.346-0.352-0.185-0.183-4.040-4.041 0.002-0.003-3.922-3.922 4.576-4.576 3.917 3.917 9.341-9.341 4.576 4.576-9.869 9.874zM6.872 16.79l2.459 2.459 0.005-0.005 0.003 0.003 2.452-2.452 0.528-0.533 8.811-8.811-2.454-2.454-9.341 9.341-3.917-3.917-2.454 2.454 3.912 3.912z"></path></svg>
+                                                <div><strong>{{ message }}</strong> Você pode verificar os dados abaixo.</div>
+                                            </div>
+                                            <button type="button" class="btn-close" data-coreui-dismiss="alert" aria-label="Close"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+
+                    <div class="table-responsive">
+                        <table class="table border">
+                            <thead class="text-disabled fw-semibold table-light">
+                                <tr class="align-middle">
+                                    <th class="text-center"><svg class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M21.682 14.826l-3.016-1.974 1.161-2.129c0.269-0.5 0.427-1.093 0.428-1.724v-3.375c0-0.004 0-0.008 0-0.012 0-2.691-2.181-4.872-4.872-4.872-1.281 0-2.446 0.494-3.316 1.302l0.003-0.003 1.019 1.1c0.6-0.556 1.405-0.897 2.291-0.897 1.864 0 3.375 1.511 3.375 3.375 0 0.002 0 0.005 0 0.007v-0 3.375c-0 0.367-0.091 0.713-0.25 1.018l0.006-0.012-1.824 3.344 4.175 2.732c0.542 0.358 0.894 0.965 0.894 1.654 0 0.002 0 0.005-0 0.007v-0 2.508h-3.375v1.5h4.875v-4.008c0-0.003 0-0.006 0-0.009 0-1.211-0.62-2.277-1.56-2.898l-0.013-0.008z"></path><path d="M14.932 16.326l-3.016-1.974 1.161-2.129c0.269-0.5 0.427-1.093 0.428-1.724v-3.375c-0.002-2.694-2.184-4.877-4.877-4.881h-0c-2.687 0-4.873 2.19-4.873 4.881v3.375c-0 0.005-0 0.011-0 0.017 0 0.624 0.156 1.212 0.432 1.726l-0.010-0.020 1.168 2.14-2.999 1.962c-0.953 0.629-1.573 1.695-1.573 2.905 0 0.002 0 0.004 0 0.006v-0l-0.023 4.012h15.754v-4.008c0-0.003 0-0.006 0-0.009 0-1.211-0.62-2.277-1.56-2.898l-0.013-0.008zM15.004 21.75h-12.746l0.015-2.508c0-0.002 0-0.004 0-0.007 0-0.689 0.352-1.295 0.887-1.649l0.007-0.005 4.157-2.72-1.831-3.356c-0.151-0.29-0.239-0.633-0.239-0.997 0-0.003 0-0.006 0-0.009v0-3.375c0-1.864 1.511-3.375 3.375-3.375s3.375 1.511 3.375 3.375v0 3.375c-0 0.367-0.091 0.713-0.25 1.018l0.006-0.012-1.824 3.344 4.175 2.732c0.542 0.358 0.894 0.965 0.894 1.654 0 0.002 0 0.005-0 0.007v-0z"></path></svg></th>
+                                    <th>Usuário</th>
+                                    <th>Permissões/Licenças</th>
+                                    <th>Data de criação</th>
+                                    <th>Atividades</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if pager is not empty %}
+                                    {% for user in pager %}
+                                        <tr class="align-middle">
+                                            <td class="text-center">
+                                                <div class="avatar avatar-lg">
+                                                    <img class="avatar-img" src="{{ asset('images/avatars/empty.png') }}" alt="{{ user.username }}" />
+                                                    <span class="avatar-status bg-{{ user.isActive ? 'success' : 'danger' }}"></span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="text-nowrap">{{ user.username }}</div>
+                                                <div class="small text-medium-emphasis text-nowrap">{{ user.email }}</div>
+                                            </td>
+                                            <td>
+                                                [<ul class="mb-0">
+                                                {% for role in user.roles %}
+                                                    <li class="dashed fw-semibold">{{ role }}</li>
+                                                {% endfor %}
+                                                </ul>]
+                                            </td>
+                                            <td>{{ user.createdAt|date('d/m/Y H:i') }}</td>
+                                            <td>
+                                                <div class="small text-medium-emphasis">Último acesso</div>
+                                                <div class="fw-semibold text-nowrap">{{ user.lastLogin|time_diff(locale="pt") }}</div>
+                                            </td>
+                                            <td>
+                                                <a class="btn btn btn-info" href="{{ path('app_users_edit', {'id': user.id}) }}" title="Editar usuário">
+                                                    <svg class="icon text-white" version="1.1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M15.686 0.75h-13.436v22.5h19.875v-16.061zM20.625 7.811v0.064h-5.625v-5.625h0.064zM3.75 21.75v-19.5h9.75v7.125h7.125v12.375z"></path><path d="M6.375 13.875h10.5v1.5h-10.5v-1.5z"></path><path d="M6.375 17.625h10.5v1.5h-10.5v-1.5z"></path></svg>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                {% else %}
+                                    <tr>
+                                        <td class="p-3" colspan="6">Nenhum usuário foi encontrado.</td>
+                                    </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <div class="col d-flex justify-content-center align-items-center">
+                            {% if pager is not empty %}
+                                {{ pagerfanta(pager, {'prev_message': '<', 'next_message': '>'}) }}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

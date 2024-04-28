@@ -1,0 +1,167 @@
+{% extends 'layouts/base-admin.html.twig' %}
+{% block title %}Relatório de Vacinas{% endblock %}
+
+{% block breadcrumbs %}
+    <li class="breadcrumb-item"><span><a href="{{ path('app_admin') }}">Dashboard</a></span></li>
+    <li class="breadcrumb-item active"><span>Relatório de Vacinas</span></li>
+{% endblock %}
+
+{% set pagerNotEmpty = pager is not empty %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mb-4">
+                <div class="card-body p-4">
+                    <div class="row">
+                        <div class="col">
+                            <div class="card-title fs-4 fs-semibold">Relatório de Vacinas</div>
+                            <div class="card-subtitle text-secondary mt-3">Filtros disponíveis</div>
+                        </div>
+                    </div>
+                    <div class="row mt-1">
+                        {{ form_start(form, {'attr': {'id': 'vaccineForm'}}) }}
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-floating mb-3">
+                                        {{ form_widget(form.name, { 'attr': { 'class': 'form-control', 'placeholder': 'name' } }) }}
+                                        {{ form_label(form.name) }}
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-floating mb-3">
+                                        {{ form_widget(form.type, { 'attr': { 'class': 'form-control', 'placeholder': 'type' } }) }}
+                                        {{ form_label(form.type) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-floating mb-3">
+                                        {{ form_widget(form.applicationDateInitial, { 'attr': { 'class': 'form-control', 'placeholder': 'applicationDateInitial' } }) }}
+                                        {{ form_label(form.applicationDateInitial) }}
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-floating mb-3">
+                                        {{ form_widget(form.applicationDateEnd, { 'attr': { 'class': 'form-control', 'placeholder': 'applicationDateEnd' } }) }}
+                                        {{ form_label(form.applicationDateEnd) }}
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-floating mb-3">
+                                        {{ form_widget(form.reinforcementDateInitial, { 'attr': { 'class': 'form-control', 'placeholder': 'reinforcementDateInitial' } }) }}
+                                        {{ form_label(form.reinforcementDateInitial) }}
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-floating mb-3">
+                                        {{ form_widget(form.reinforcementDateEnd, { 'attr': { 'class': 'form-control', 'placeholder': 'reinforcementDateEnd' } }) }}
+                                        {{ form_label(form.reinforcementDateEnd) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col d-flex justify-content-center">
+                                    <button class="btn btn-primary me-2 text-white" type="submit">Buscar dados</button>
+                                    <a href="{{ path('app_report_vaccines') }}" class="btn btn-primary me-2 text-white" type="submit">Limpar busca</a>
+                                </div>
+                            </div>
+                        {{ form_end(form, {render_rest: false}) }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col">
+                    <div class="card mb-4">
+                        <div class="card-body p-4">
+                            <div class="row">
+                                <div class="col d-flex justify-content-between">
+                                    <div class="card-title fs-5 fs-semibold">Resultado encontrados</div>
+                                    {% if pager is not empty %}
+                                        <button class="btn btn-primary btn-export-vaccines" title="Exportar dados para CSV">
+                                            <svg class="icon text-white" version="1.1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12.75 20.379v-10.573h-1.5v10.573l-2.432-2.432-1.061 1.061 4.243 4.243 4.243-4.243-1.061-1.061-2.432 2.432z"></path><path d="M18.75 7.555c0-3.722-3.028-6.75-6.75-6.75s-6.75 3.028-6.75 6.75c-2.485 0-4.5 2.015-4.5 4.5s2.015 4.5 4.5 4.5h3.75v-1.5h-3.75c-1.657 0-3-1.343-3-3s1.343-3 3-3v0h1.5v-1.5c0-2.899 2.351-5.25 5.25-5.25s5.25 2.351 5.25 5.25v0 1.5h1.5c1.657 0 3 1.343 3 3s-1.343 3-3 3v0h-3.75v1.5h3.75c2.485 0 4.5-2.015 4.5-4.5s-2.015-4.5-4.5-4.5v0z"></path></svg>
+                                        </button>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col">
+                                    {% if pager is not empty %}
+                                        <div class="table-responsive">
+                                            <table class="table">
+                                                <thead class="table-light fw-semibold">
+                                                    <tr class="align-middle">
+                                                        <th class="text-center">#</th>
+                                                        <th>Nome</th>
+                                                        <th>Tipo</th>
+                                                        <th>Pet que recebeu</th>
+                                                        <th>Vet que aplicou</th>
+                                                        <th>Data da aplicação</th>
+                                                        <th>Data do reforço</th>
+                                                        <th>Preço <span class="small fw-normal">(R$)</span></th>
+                                                        <th>Fabricante</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for vaccine in pager %}
+                                                        <tr class="align-middle">
+                                                            <td class="text-center">{{ vaccine.id }}</td>
+                                                            <td>{{ vaccine.name }}</td>
+                                                            <td>{{ vaccine.type.name }}</td>
+                                                            <td>{{ vaccine.pet.name }}</td>
+                                                            <td>{{ vaccine.veterinarian.name }}</td>
+                                                            <td>{{ vaccine.applicationDate|date('d/m/Y') }}</td>
+                                                            <td>{{ vaccine.reinforcementAt|date('d/m/Y') }}</td>
+                                                            <td>{{ vaccine.price|number_format(2, ',', '.') }}</td>
+                                                            <td>{{ vaccine.manufacturer }}</td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    {% else %}
+                                        <div class="alert alert-danger">Não foi possível localizar nenhuma vacina com os filtros selecionados. Por favor, tente novamente.</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% if pager is not empty %}
+                                <div class="d-flex justify-content-center">
+                                    {{ pagerfanta(pager, {'prev_message': '<', 'next_message': '>'}) }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+        $(document).ready(function() {
+            $('.btn-export-vaccines').click(function(e) {
+                e.preventDefault();
+                const formData = $('#vaccineForm').serialize();
+                $.ajax({
+                    url: `{{ path('app_report_vaccines_export') }}`,
+                    method: 'POST',
+                    data: formData,
+                    success: function(response) {
+                        let blob = new Blob([response], { type: 'text/csv' });
+                        let url = window.URL.createObjectURL(blob);
+                        let link = document.createElement('a');
+                        link.href = url;
+                        link.download = 'vaccines_report_' + Date.now() + '.csv';
+                        link.click();
+                        window.URL.revokeObjectURL(url);
+                    },
+                });
+            });
+        });
+    </script>
+{% endblock %}

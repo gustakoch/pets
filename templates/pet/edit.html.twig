@@ -1,0 +1,105 @@
+{% extends 'layouts/base-admin.html.twig' %}
+{% block title %}Editar Pet{% endblock %}
+
+{% block breadcrumbs %}
+    <li class="breadcrumb-item"><span><a href="{{ path('app_admin') }}">Dashboard</a></span></li>
+    <li class="breadcrumb-item"><span><a href="{{ path('app_pets') }}">Pets</a></span></li>
+    <li class="breadcrumb-item active"><span>Editar pet</span></li>
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mb-4">
+                <div class="card-body p-4">
+                    <div class="row">
+                        <div class="col">
+                            <div class="card-title fs-4 fs-semibold">Editando {{ pet.name }}</div>
+                        </div>
+                    </div>
+                    {{ form_start(form) }}
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" />
+                    <div class="row mt-3">
+                        <div class="col">
+                            <div class="form-floating mb-3">
+                                {{ form_widget(form.name, { 'attr': { 'class': 'form-control', 'placeholder': 'name' } }) }}
+                                {{ form_label(form.name) }}
+                                <div class="form-error text-danger mt-1">
+                                    {{ form_errors(form.name) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-floating mb-3">
+                                {{ form_widget(form.specie, { 'attr': { 'class': 'form-control', 'placeholder': 'specie' } }) }}
+                                {{ form_label(form.specie) }}
+                                <div class="form-error text-danger mt-1">
+                                    {{ form_errors(form.specie) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-floating mb-3">
+                                {{ form_widget(form.dateOfBirth, { 'attr': { 'class': 'form-control', 'placeholder': 'dateOfBirth' } }) }}
+                                {{ form_label(form.dateOfBirth) }}
+                                <div class="form-error text-danger mt-1">
+                                    {{ form_errors(form.dateOfBirth) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-floating mb-3">
+                                {{ form_widget(form.breed, { 'attr': { 'class': 'form-control', 'placeholder': 'breed' } }) }}
+                                {{ form_label(form.breed) }}
+                                <div class="form-error text-danger mt-1">
+                                    {{ form_errors(form.breed) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-floating mb-3">
+                                {{ form_widget(form.color, { 'attr': { 'class': 'form-control', 'placeholder': 'color' } }) }}
+                                {{ form_label(form.color) }}
+                                <div class="form-error text-danger mt-1">
+                                    {{ form_errors(form.color) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% if pet.imagePath %}
+                        <img class="img-thumbnail mb-2 height-200" src="{{ pet.imagePath }}" alt="{{ pet.name }}" />
+                        <a class="btn btn-danger" href="{{ path('app_pets_delete_image', {'id': pet.id}) }}" title="Delete image">
+                            <svg class="icon text-white" version="1.1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M4.5 22.125c-0 0.003-0 0.006-0 0.008 0 0.613 0.494 1.11 1.105 1.116h12.79c0.612-0.006 1.105-0.504 1.105-1.117 0-0.003-0-0.006-0-0.009v0-15h-15zM6 8.625h12v13.125h-12z"></path><path d="M7.875 10.125h1.5v9.375h-1.5v-9.375z"></path><path d="M11.25 10.125h1.5v9.375h-1.5v-9.375z"></path><path d="M14.625 10.125h1.5v9.375h-1.5v-9.375z"></path><path d="M15.375 4.125v-2.25c0-0.631-0.445-1.125-1.013-1.125h-4.725c-0.568 0-1.013 0.494-1.013 1.125v2.25h-5.625v1.5h18v-1.5zM10.125 2.25h3.75v1.875h-3.75z"></path></svg>
+                        </a>
+                    {% endif %}
+                    <div class="row">
+                        <div class="col">
+                                <div class="form-floating mb-3">
+                                    {{ form_widget(form.veterinarians, { 'attr': { 'class': 'form-control', 'placeholder': 'veterinarians' } }) }}
+                                    {{ form_label(form.veterinarians) }}
+                                    <div class="form-error text-danger mt-1">
+                                        {{ form_errors(form.veterinarians) }}
+                                    </div>
+                                </div>
+                            </div>
+                        <div class="col">
+                            <div class="form-floating mb-3">
+                                {{ form_widget(form.imageFile, { 'attr': { 'class': 'form-control padding-input-type-file', 'placeholder': 'imageFile' } }) }}
+                                {{ form_label(form.imageFile) }}
+                                <div class="form-error text-danger mt-1">
+                                    {{ form_errors(form.imageFile) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary me-2" type="submit">Atualizar pet</button>
+                    <a href="{{ path('app_pets') }}" class="btn btn-primary">Cancelar</a>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

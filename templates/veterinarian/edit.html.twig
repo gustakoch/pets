@@ -1,0 +1,197 @@
+{% extends 'layouts/base-admin.html.twig' %}
+{% block title %}Editar veterinário{% endblock %}
+
+{% block breadcrumbs %}
+    <li class="breadcrumb-item"><span><a href="{{ path('app_admin') }}">Dashboard</a></span></li>
+    <li class="breadcrumb-item"><span><a href="{{ path('app_vets') }}">Veterinários</a></span></li>
+    <li class="breadcrumb-item active"><span>{{ veterinarian.name }}</span></li>
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mb-4">
+                <div class="card-body p-4">
+                    <div class="row">
+                        <div class="col">
+                            <div class="card-title fs-4 fs-semibold">Editando <b>{{ veterinarian.name }}</b></div>
+                        </div>
+                    </div>
+                    {{ form_start(form) }}
+                        <div class="row mt-3">
+                            <span class="h6 text-secondary">Dados do veterinário</span>
+                            <div class="col">
+                                <div class="form-floating mb-3">
+                                    {{ form_widget(form.veterinarian.name, { 'attr': { 'class': 'form-control', 'placeholder': 'Name' } }) }}
+                                    {{ form_label(form.veterinarian.name) }}
+                                    <div class="form-error text-danger mt-1">
+                                        {{ form_errors(form.veterinarian.name) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-floating mb-3">
+                                    {{ form_widget(form.veterinarian.email, { 'attr': { 'class': 'form-control', 'placeholder': 'Email' } }) }}
+                                    {{ form_label(form.veterinarian.email) }}
+                                    <div class="form-error text-danger mt-1">
+                                        {{ form_errors(form.veterinarian.email) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-floating mb-3">
+                                    {{ form_widget(form.veterinarian.phone, { 'attr': { 'class': 'form-control', 'placeholder': 'Phone' } }) }}
+                                    {{ form_label(form.veterinarian.phone) }}
+                                    <div class="form-error text-danger mt-1">
+                                        {{ form_errors(form.veterinarian.phone) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col"></div>
+                            <div class="col">
+                                <div class="form-check form-switch">
+                                    {{ form_widget(form.veterinarian.isPhoneWhatsapp, { 'attr': { 'class': 'form-check-input', 'placeholder': 'Phone has Whatsapp', 'role': 'switch' } }) }}
+                                    {{ form_label(form.veterinarian.isPhoneWhatsapp) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-floating mb-3">
+                                    {{ form_widget(form.veterinarian.specializations, { 'attr': { 'class': 'form-control', 'placeholder': 'Specializations' } }) }}
+                                    {{ form_label(form.veterinarian.specializations) }}
+                                    <div class="form-error text-danger mt-1">
+                                        {{ form_errors(form.veterinarian.specializations) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <span class="h6 text-secondary">Dados do endereço</span>
+                            <div class="col-2">
+                                <div class="form-floating mb-3">
+                                    {{ form_widget(form.address.zipcode, { 'attr': { 'class': 'form-control', 'placeholder': 'Zipcode' } }) }}
+                                    {{ form_label(form.address.zipcode) }}
+                                    <div class="form-error text-danger mt-1">
+                                        {{ form_errors(form.address.zipcode) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-floating mb-3">
+                                    {{ form_widget(form.address.street, { 'attr': { 'class': 'form-control', 'placeholder': 'Street' } }) }}
+                                    {{ form_label(form.address.street) }}
+                                    <div class="form-error text-danger mt-1">
+                                        {{ form_errors(form.address.street) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="form-floating mb-3">
+                                    {{ form_widget(form.address.number, { 'attr': { 'class': 'form-control', 'placeholder': 'number' } }) }}
+                                    {{ form_label(form.address.number) }}
+                                    <div class="form-error text-danger mt-1">
+                                        {{ form_errors(form.address.number) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="form-floating mb-3">
+                                    {{ form_widget(form.address.complement, { 'attr': { 'class': 'form-control', 'placeholder': 'complement' } }) }}
+                                    {{ form_label(form.address.complement) }}
+                                    <div class="form-error text-danger mt-1">
+                                        {{ form_errors(form.address.complement) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-floating mb-3">
+                                    {{ form_widget(form.address.district, { 'attr': { 'class': 'form-control', 'placeholder': 'district' } }) }}
+                                    {{ form_label(form.address.district) }}
+                                    <div class="form-error text-danger mt-1">
+                                        {{ form_errors(form.address.district) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-floating mb-3">
+                                    {{ form_widget(form.address.state, { 'attr': { 'class': 'form-control state-select', 'placeholder': 'state' } }) }}
+                                    {{ form_label(form.address.state) }}
+                                    <div class="form-error text-danger mt-1">
+                                        {{ form_errors(form.address.state) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="spinner-border text-secondary mt-2 box-spinner-city-select" role="status" style="display: none;">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <div class="form-floating mb-3 box-city-select">
+                                    <select class="form-control city-select" name="city" id="city" placeholder="City">
+                                        <option value=>-</option>
+                                    </select>
+                                    <label for="city">Cidade</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary me-2" type="submit">Atualizar veterinário</button>
+                        <a href="{{ path('app_vets') }}" class="btn btn-primary">Cancelar</a>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+        setTimeout(function() {
+            let selectState = $('.state-select');
+            if (selectState.val()) {
+                carregarCidadesPorEstado(selectState.val());
+            }
+        }, 200)
+        setTimeout(function() {
+            $('.city-select').val({{ address.city.id }})
+        }, 300);
+
+        function carregarCidadesPorEstado(stateId) {
+            $.ajax({
+                url: `/address/cities/${stateId}`,
+                method: 'GET',
+                dataType: 'json',
+                beforeSend: function() {
+                    $('.box-spinner-city-select').show();
+                    $('.box-city-select').hide();
+                },
+                success: function(response) {
+                    if (response.error) {
+                        $('.box-spinner-city-select').hide();
+                        $('.box-city-select').show();
+                        return;
+                    }
+                    let citySelect = $('.city-select');
+                    citySelect.empty();
+                    $.each(response.data, function(i, city) {
+                        citySelect.append($('<option>').attr('value', city.id).text(city.name));
+                    });
+                    $('.box-spinner-city-select').hide();
+                    $('.box-city-select').show();
+                },
+                error: function(xhr, status, error) {
+                    $('.box-spinner-city-select').hide();
+                    $('.box-city-select').show();
+                }
+            });
+        }
+    </script>
+{% endblock %}

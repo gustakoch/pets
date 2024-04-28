@@ -1,0 +1,139 @@
+{% extends 'layouts/base-admin.html.twig' %}
+{% block title %}Editando vacina{% endblock %}
+
+{% block breadcrumbs %}
+    <li class="breadcrumb-item"><span><a href="{{ path('app_admin') }}">Dashboard</a></span></li>
+    <li class="breadcrumb-item"><span><a href="{{ path('app_vaccines') }}">Vacinas</a></span></li>
+    <li class="breadcrumb-item active"><span>Editando vacina</span></li>
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mb-4">
+                <div class="card-body p-4">
+                    <div class="row mb-3">
+                        <div class="col">
+                            <div class="card-title fs-4 fs-semibold">Editando {{ vaccine.name }}</div>
+                        </div>
+                    </div>
+                    {{ form_start(form) }}
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-floating mb-3">
+                                    {{ form_widget(form.name, { 'attr': { 'class': 'form-control', 'placeholder': 'name' } }) }}
+                                    {{ form_label(form.name) }}
+                                    <div class="form-error text-danger mt-1">
+                                        {{ form_errors(form.name) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-floating mb-3">
+                                    {{ form_widget(form.veterinarian, { 'attr': { 'class': 'form-control', 'placeholder': 'veterinarian' } }) }}
+                                    {{ form_label(form.veterinarian) }}
+                                    <div class="form-error text-danger mt-1">
+                                        {{ form_errors(form.veterinarian) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-floating mb-3">
+                                    {{ form_widget(form.pet, { 'attr': { 'class': 'form-control', 'placeholder': 'pet' } }) }}
+                                    {{ form_label(form.pet) }}
+                                    <div class="form-error text-danger mt-1">
+                                        {{ form_errors(form.pet) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-floating mb-3">
+                                    {{ form_widget(form.description, { 'attr': { 'class': 'form-control', 'placeholder': 'description' } }) }}
+                                    {{ form_label(form.description) }}
+                                    <div class="form-error text-danger mt-1">
+                                        {{ form_errors(form.description) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-floating mb-3">
+                                    {{ form_widget(form.type, { 'attr': { 'class': 'form-control', 'placeholder': 'type' } }) }}
+                                    {{ form_label(form.type) }}
+                                    <div class="form-error text-danger mt-1">
+                                        {{ form_errors(form.type) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-floating mb-3">
+                                    {{ form_widget(form.applicationDate, { 'attr': { 'class': 'form-control', 'placeholder': 'applicationDate' } }) }}
+                                    {{ form_label(form.applicationDate) }}
+                                    <div class="form-error text-danger mt-1">
+                                        {{ form_errors(form.applicationDate) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-floating mb-3">
+                                    {{ form_widget(form.reinforcementAt, { 'attr': { 'class': 'form-control', 'placeholder': 'reinforcementAt' } }) }}
+                                    {{ form_label(form.reinforcementAt) }}
+                                    <div class="form-error text-danger mt-1">
+                                        {{ form_errors(form.reinforcementAt) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-floating mb-3">
+                                    {{ form_widget(form.price, { 'attr': { 'class': 'form-control', 'placeholder': 'price' } }) }}
+                                    {{ form_label(form.price) }}
+                                    <div class="form-error text-danger mt-1">
+                                        {{ form_errors(form.price) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-floating mb-3">
+                                    {{ form_widget(form.manufacturer, { 'attr': { 'class': 'form-control', 'placeholder': 'manufacturer' } }) }}
+                                    {{ form_label(form.manufacturer) }}
+                                    <div class="form-error text-danger mt-1">
+                                        {{ form_errors(form.manufacturer) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-floating mb-3">
+                                    {{ form_widget(form.comments, { 'attr': { 'class': 'form-control', 'placeholder': 'comments' } }) }}
+                                    {{ form_label(form.comments) }}
+                                    <div class="form-error text-danger mt-1">
+                                        {{ form_errors(form.comments) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary text-white me-2" type="submit">Atualizar vacina</button>
+                        <a href="{{ path('app_vaccines') }}" class="btn btn-primary text-white">Cancelar</a>
+                        {{ form_row(form._token) }}
+                    {{ form_end(form, {render_rest: false}) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent( )}}
+
+    <script>
+        $(document).ready(function() {
+            $('#vaccine_price').mask('000,00');
+        });
+    </script>
+{% endblock %}

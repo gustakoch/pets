@@ -1,0 +1,182 @@
+{% extends 'layouts/base-admin.html.twig' %}
+{% block title %}Exibindo pet{% endblock %}
+
+{% block breadcrumbs %}
+    <li class="breadcrumb-item"><span><a href="{{ path('app_admin') }}">Dashboard</a></span></li>
+    <li class="breadcrumb-item"><span><a href="{{ path('app_pets') }}">Pets</a></span></li>
+    <li class="breadcrumb-item active"><span>{{ pet.name }}</span></li>
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mb-4">
+                <div class="card-body p-4">
+                    <div class="row mb-3">
+                        <div class="col">
+                            <div class="card-title fs-4 fs-semibold">Informações sobre <b>{{ pet.name }}</b></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3 d-flex justify-content-center">
+                            <div class="box-image-pet shadow">
+                                {% if pet.imagePath %}
+                                    <img class="img-thumbnail" src="{{ pet.imagePath }}" alt="{{ pet.name }}" style="object-fit: fill; height: 100%; width: 100%; border-radius: 50%;" />
+                                {% else %}
+                                    <div class="letters-pet bg-primary text-white w-100 h-100 d-flex justify-content-center align-items-center display-3" style="border-radius: 50%;">
+                                        {{ pet.extractFirstTwoInitials(pet.name) }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-3 d-flex align-items-center">
+                            <div class="card shadow-sm w-100">
+                                <div class="card-body">
+                                    <h6 class="card-title">Nome do pet</h6>
+                                    <p class="card-text">{{ pet.name }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-3 d-flex align-items-center">
+                            <div class="card shadow-sm w-100">
+                                <div class="card-body">
+                                    <h6 class="card-title">Espécie</h6>
+                                    <p class="card-text">{{ pet.specie.name }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-3">
+                            <div class="card shadow-sm">
+                                <div class="card-body">
+                                    <h6 class="card-title">Raça</h6>
+                                    <p class="card-text">{{ pet.breed }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="card shadow-sm">
+                                <div class="card-body">
+                                    <h6 class="card-title">Cor</h6>
+                                    <p class="card-text">{{ pet.color }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="card shadow-sm">
+                                <div class="card-body">
+                                    <h6 class="card-title">Data de nascimento</h6>
+                                    <p class="card-text">{{ pet.dateOfBirth|date('d/m/Y') }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <span class="h6 text-secondary">Veterinários</span>
+                        <div class="col">
+                            <div class="card shadow-sm">
+                                <div class="card-body mx-2">
+                                    <p class="card-text">
+                                        {% if pet.veterinarians is not empty %}
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Nome da veterinário</th>
+                                                        <th>Especializações</th>
+                                                        <th>Ações</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for veterinarian in pet.veterinarians %}
+                                                        <tr>
+                                                            <td>{{ veterinarian.name }}</td>
+                                                            <td>{{ veterinarian.specializations|nl2br }}</td>
+                                                            <td>
+                                                                <a
+                                                                    href="{{ path('app_vets_show', {id: veterinarian.id}) }}"
+                                                                    class="btn btn-sm btn-success text-white"
+                                                                    title="Mais informações sobre o veterinário">
+                                                                + Info
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        {% else %}
+                                            <span>Não foram localizados veterinários.</span>
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <span class="h6 text-secondary">Vacinas aplicadas</span>
+                        <div class="col">
+                            <div class="card shadow-sm">
+                                <div class="card-body mx-2">
+                                    <p class="card-text">
+                                        {% if pet.vaccines is not empty %}
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Nome da vacina</th>
+                                                        <th>Descrição</th>
+                                                        <th>Data do reforço</th>
+                                                        <th>Validade</th>
+                                                        <th>Ações</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for vaccine in pet.vaccines %}
+                                                        {% set actualDate = 'now' %}
+                                                        {% set secondsDiff = vaccine.reinforcementAt|date('U') - actualDate|date('U') %}
+                                                        {% set daysDiff = (secondsDiff / 86400)|number_format %}
+                                                        {% set overdue = daysDiff < 0 %}
+                                                        <tr>
+                                                            <td>{{ vaccine.name }}</td>
+                                                            <td>{{ vaccine.description ?? '-' }}</td>
+                                                            <td>{{ vaccine.reinforcementAt|date('d/m/Y') }}</td>
+                                                            <td>
+                                                                {% if daysDiff == -1 %}
+                                                                    <span class="text-danger fw-semibold">Vence hoje</span>
+                                                                {% elseif overdue == '1' %}
+                                                                    <span class="text-danger fw-semibold">Vencida</span>
+                                                                {% elseif daysDiff == 0 %}
+                                                                    <span class="text-danger fw-semibold">Vence amanhã</span>
+                                                                {% else %}
+                                                                    {{ daysDiff }} dias restantes
+                                                                {% endif %}
+                                                            </td>
+                                                            <td>
+                                                                <a
+                                                                    href="{{ path('app_vaccines_show', {id: vaccine.id}) }}"
+                                                                    class="btn btn-sm btn-success text-white"
+                                                                    title="Mais informações sobre a vacina">
+                                                                + Info
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        {% else %}
+                                            <span>Não foram localizadas vacinas.</span>
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="{{ path('app_pets') }}" class="btn btn-primary text-white mt-4">
+                        <svg class="icon text-white" version="1.1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M23.312 11.25h-19.558l4.5-4.5-1.061-1.061-6.31 6.31 6.31 6.31 1.061-1.061-4.5-4.5h19.558v-1.5z"></path></svg>&nbsp;
+                        Lista de pets
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
