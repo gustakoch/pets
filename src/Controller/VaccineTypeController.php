@@ -49,7 +49,7 @@ class VaccineTypeController extends AbstractController
             $vaccineType->setUser($this->getUser());
             $this->entityManager->persist($vaccineType);
             $this->entityManager->flush();
-            $this->addFlash('vaccineTypeCreated', sprintf('Tipo de vacina `%s` criado!', $vaccineType->getName()));
+            $this->addFlash('vaccineTypeCreated', sprintf('Tipo de vacina %s criado!', $vaccineType->getName()));
 
             return $this->redirectToRoute('app_vaccines_create');
         }

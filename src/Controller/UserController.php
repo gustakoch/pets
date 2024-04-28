@@ -46,7 +46,7 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $email = $form->get('email')->getData();
             if ($this->userRepository->checkIfUserExistsByEmail($email)) {
-                $this->addFlash('userExists', sprintf('O usuário `%s` já existe no banco de dados.', $email));
+                $this->addFlash('userExists', sprintf('O usuário %s já existe no banco de dados.', $email));
 
                 return $this->redirectToRoute('app_users_create');
             }
@@ -55,7 +55,7 @@ class UserController extends AbstractController
             $user->setPassword($this->passwordHasher->hashPassword($user, $form->get('password')->getData()));
             $this->entityManager->persist($user);
             $this->entityManager->flush();
-            $this->addFlash('userCreated', sprintf('Usuário `%s` criado!', $user->getUsername()));
+            $this->addFlash('userCreated', sprintf('Usuário %s criado!', $user->getUsername()));
 
             return $this->redirectToRoute('app_users');
         }
@@ -84,7 +84,7 @@ class UserController extends AbstractController
             $user->setUpdatedAt(new \DateTime());
             $this->entityManager->persist($user);
             $this->entityManager->flush();
-            $this->addFlash('userUpdated', sprintf('Usuário `%s` atualizado!', $user->getUsername()));
+            $this->addFlash('userUpdated', sprintf('Usuário %s atualizado!', $user->getUsername()));
 
             return $this->redirectToRoute('app_users');
         }

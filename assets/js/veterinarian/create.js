@@ -10,6 +10,7 @@ $(document).ready(function() {
             $('.city-select').empty().append($('<option>').text('Selecione o estado primeiro'));
         }
     });
+
     $('#form_address_zipcode').blur(function(e) {
         let zipcode = $(this).val();
         $('#form_address_street').val('');
@@ -36,7 +37,7 @@ $(document).ready(function() {
                 carregarCidadesPorEstado(data.state.id);
                 setTimeout(function() {
                     $('#city').val(data.city.id);
-                }, 200)
+                }, 300)
             },
             error: function(xhr, status, error) {
                 return;

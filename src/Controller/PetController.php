@@ -81,7 +81,7 @@ class PetController extends AbstractController
             $pet->setUser($user);
             $this->entityManager->persist($pet);
             $this->entityManager->flush();
-            $this->addFlash('petCreated', sprintf('Pet `%s` cadastrado!', $pet->getName()));
+            $this->addFlash('petCreated', sprintf('Pet %s cadastrado!', $pet->getName()));
 
             return $this->redirectToRoute('app_pets');
         }
@@ -130,7 +130,7 @@ class PetController extends AbstractController
             $pet->setUpdatedAt(new \DateTime());
             $this->entityManager->persist($pet);
             $this->entityManager->flush();
-            $this->addFlash('petUpdated', sprintf('Pet `%s` atualizado!', $pet->getName()));
+            $this->addFlash('petUpdated', sprintf('Pet %s atualizado!', $pet->getName()));
 
             return $this->redirectToRoute('app_pets');
         }
@@ -165,7 +165,7 @@ class PetController extends AbstractController
         $pet->setDeletedAt(new \DateTime());
         $this->entityManager->persist($pet);
         $this->entityManager->flush();
-        $this->addFlash('petDeleted', sprintf('Pet `%s` removido!', $pet->getName()));
+        $this->addFlash('petDeleted', sprintf('Pet %s removido!', $pet->getName()));
 
         return $this->redirectToRoute('app_pets');
     }

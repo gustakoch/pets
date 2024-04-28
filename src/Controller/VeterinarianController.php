@@ -75,7 +75,7 @@ class VeterinarianController extends AbstractController
             $this->entityManager->persist($address);
             $this->entityManager->persist($veterinarian);
             $this->entityManager->flush();
-            $this->addFlash('vetCreated', sprintf('Veterinário `%s` cadastrado!', $veterinarian->getName()));
+            $this->addFlash('vetCreated', sprintf('Veterinário %s cadastrado!', $veterinarian->getName()));
 
             return $this->redirectToRoute('app_vets');
         }
@@ -109,7 +109,7 @@ class VeterinarianController extends AbstractController
             $this->entityManager->persist($address);
             $this->entityManager->persist($veterinarian);
             $this->entityManager->flush();
-            $this->addFlash('vetUpdated', sprintf('Veterinário `%s` atualizado!', $veterinarian->getName()));
+            $this->addFlash('vetUpdated', sprintf('Veterinário %s atualizado!', $veterinarian->getName()));
 
             return $this->redirectToRoute('app_vets');
         }
@@ -142,7 +142,7 @@ class VeterinarianController extends AbstractController
         $veterinarian->setDeletedAt(new \DateTime());
         $this->entityManager->persist($veterinarian);
         $this->entityManager->flush();
-        $this->addFlash('vetDeleted', sprintf('Veterinário `%s` removido!', $veterinarian->getName()));
+        $this->addFlash('vetDeleted', sprintf('Veterinário %s removido!', $veterinarian->getName()));
 
         return $this->redirectToRoute('app_vets');
     }

@@ -63,7 +63,7 @@ class VaccineController extends AbstractController
             $vaccine->setUser($user);
             $this->entityManager->persist($vaccine);
             $this->entityManager->flush();
-            $this->addFlash('vaccineCreated', sprintf('Vacina `%s` cadastrada!', $vaccine->getName()));
+            $this->addFlash('vaccineCreated', sprintf('Vacina %s cadastrada!', $vaccine->getName()));
 
             return $this->redirectToRoute(self::ROUTE_APP_VACCINES);
         }
@@ -102,7 +102,7 @@ class VaccineController extends AbstractController
             $vaccine->setUpdatedAt(new \DateTime());
             $this->entityManager->persist($vaccine);
             $this->entityManager->flush();
-            $this->addFlash('vaccineUpdated', sprintf('Vacina `%s` atualizada!', $vaccine->getName()));
+            $this->addFlash('vaccineUpdated', sprintf('Vacina %s atualizada!', $vaccine->getName()));
 
             return $this->redirectToRoute(self::ROUTE_APP_VACCINES);
         }
@@ -123,7 +123,7 @@ class VaccineController extends AbstractController
         $vaccine->setDeletedAt(new \DateTime());
         $this->entityManager->persist($vaccine);
         $this->entityManager->flush();
-        $this->addFlash('vaccineDeleted', sprintf('Vacina `%s` removida!', $vaccine->getName()));
+        $this->addFlash('vaccineDeleted', sprintf('Vacina %s removida!', $vaccine->getName()));
 
         return $this->redirectToRoute(self::ROUTE_APP_VACCINES);
     }
