@@ -155,46 +155,9 @@
 
     <script>
         setTimeout(function() {
-            console.log('carregaCidades');
-            let selectState = $('.state-select');
-            if (selectState.val()) {
-                carregarCidadesPorEstado(selectState.val());
-            }
-        }, 100)
-        setTimeout(function() {
             console.log('selecionaCidades');
             console.log('idCidade', {{ address.city.id }});
             $('.city-select').val({{ address.city.id }})
-        }, 1000);
-
-        function carregarCidadesPorEstado(stateId) {
-            $.ajax({
-                url: `/address/cities/${stateId}`,
-                method: 'GET',
-                dataType: 'json',
-                beforeSend: function() {
-                    $('.box-spinner-city-select').show();
-                    $('.box-city-select').hide();
-                },
-                success: function(response) {
-                    if (response.error) {
-                        $('.box-spinner-city-select').hide();
-                        $('.box-city-select').show();
-                        return;
-                    }
-                    let citySelect = $('.city-select');
-                    citySelect.empty();
-                    $.each(response.data, function(i, city) {
-                        citySelect.append($('<option>').attr('value', city.id).text(city.name));
-                    });
-                    $('.box-spinner-city-select').hide();
-                    $('.box-city-select').show();
-                },
-                error: function(xhr, status, error) {
-                    $('.box-spinner-city-select').hide();
-                    $('.box-city-select').show();
-                }
-            });
-        }
+        }, 400);
     </script>
 {% endblock %}

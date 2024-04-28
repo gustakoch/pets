@@ -158,13 +158,3 @@
         </div>
     </div>
 {% endblock %}
-
-{% block javascripts %}
-    {{ parent( )}}
-
-    <script>
-        $(document).ready(function() {
-            $('#vaccine_price').mask('000,00');
-        });
-    </script>
-{% endblock %}

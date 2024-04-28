@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(function() {
     $('#form_veterinarian_phone').mask('(00) 00000-0000');
     $('#form_address_zipcode').mask('00000-000');
 
@@ -10,6 +10,14 @@ $(document).ready(function() {
             $('.city-select').empty().append($('<option>').text('Selecione o estado primeiro'));
         }
     });
+
+    setTimeout(function() {
+        console.log('carregaCidades');
+        let selectState = $('.state-select');
+        if (selectState.val()) {
+            carregarCidadesPorEstado(selectState.val());
+        }
+    }, 100)
 
     $('#form_address_zipcode').blur(function(e) {
         let zipcode = $(this).val();
