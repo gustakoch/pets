@@ -12,7 +12,6 @@ $(function() {
     });
 
     setTimeout(function() {
-        console.log('carregaCidades');
         let selectState = $('.state-select');
         if (selectState.val()) {
             carregarCidadesPorEstado(selectState.val());

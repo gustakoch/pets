@@ -154,10 +154,11 @@
     {{ parent() }}
 
     <script>
-        setTimeout(function() {
-            console.log('selecionaCidades');
-            console.log('idCidade', {{ address.city.id }});
-            $('.city-select').val({{ address.city.id }})
-        }, 400);
+        $(function() {
+            setTimeout(function() {
+                console.log('idCidade', {{ address.city.id }});
+                $('.city-select').val({{ address.city.id }})
+            }, 400);
+        })
     </script>
 {% endblock %}
