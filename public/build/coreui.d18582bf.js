@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[536],{5634:(e,r,s)=>{var u=s(8417);window.coreui=u}},e=>{e.O(0,[692,417],(()=>{return r=5634,e(e.s=r);var r}));e.O()}]);

@@ -155,13 +155,15 @@
 
     <script>
         setTimeout(function() {
+            console.log('carregaCidades');
             let selectState = $('.state-select');
             if (selectState.val()) {
                 carregarCidadesPorEstado(selectState.val());
             }
         }, 100)
         setTimeout(function() {
-            console.log('foi');
+            console.log('selecionaCidades');
+            console.log('idCidade', {{ address.city.id }});
             $('.city-select').val({{ address.city.id }})
         }, 1000);
 
