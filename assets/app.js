@@ -9,6 +9,6 @@ import './js/jquery.mask.js';
 import './js/veterinarian/index.js';
 import './js/vaccine/index.js';
 
-import './js/charts/chart-vaccines.js';
+// import './js/charts/chart-vaccines.js';
 
 import './styles/global.scss';

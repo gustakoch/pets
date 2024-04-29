@@ -70,19 +70,19 @@
                         <div class="row">
                             <div class="col">
                                 <div class="form-floating mb-3">
-                                    {{ form_widget(form.veterinarians, { 'attr': { 'class': 'form-control', 'placeholder': 'veterinarians' } }) }}
-                                    {{ form_label(form.veterinarians) }}
+                                    {{ form_widget(form.imageFile, { 'attr': { 'class': 'form-control padding-input-type-file', 'placeholder': 'imageFile' } }) }}
+                                    {{ form_label(form.imageFile) }}
                                     <div class="form-error text-danger mt-1">
-                                        {{ form_errors(form.veterinarians) }}
+                                        {{ form_errors(form.imageFile) }}
                                     </div>
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="form-floating mb-3">
-                                    {{ form_widget(form.imageFile, { 'attr': { 'class': 'form-control padding-input-type-file', 'placeholder': 'imageFile' } }) }}
-                                    {{ form_label(form.imageFile) }}
+                                    {{ form_widget(form.veterinarians, { 'attr': { 'class': 'form-control', 'placeholder': 'veterinarians' } }) }}
+                                    {{ form_label(form.veterinarians) }}
                                     <div class="form-error text-danger mt-1">
-                                        {{ form_errors(form.imageFile) }}
+                                        {{ form_errors(form.veterinarians) }}
                                     </div>
                                 </div>
                             </div>
