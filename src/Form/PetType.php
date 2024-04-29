@@ -56,10 +56,7 @@ class PetType extends AbstractType
             ])
             ->add('imageFile', FileType::class, [
                 'required' => false,
-                'label' => 'Selecione uma imagem (opcional)',
-                'label_attr' => [
-                    'class' => 'padding-label-type-file',
-                ],
+                'label' => 'Selecione uma foto (opcional)',
                 'mapped' => false,
                 'empty_data' => '',
             ])
@@ -67,11 +64,11 @@ class PetType extends AbstractType
                 'required' => false,
                 'class' => Veterinarian::class,
                 'choice_label' => 'name',
-                'label' => 'Veterinários disponíveis (opcional)',
+                'label' => 'Selecione o(s) veterionário(s) (opcional)',
                 'mapped' => false,
                 'multiple' => true,
                 'attr' => [
-                    'style' => 'height: 150px',
+                    'data-selected-text-format' => 'count > 2',
                 ],
                 'query_builder' => function (VeterinarianRepository $veterinarianRepository) {
                     $user = $this->security->getUser();

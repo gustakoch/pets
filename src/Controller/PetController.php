@@ -98,7 +98,7 @@ class PetController extends AbstractController
         if (!$pet) {
             throw new AccessDeniedHttpException('Você não tem acesso a essa página');
         }
-        $form = $this->createForm(PetType::class, $pet, ['validation_groups' => 'edit']);
+        $form = $this->createForm(PetType::class, $pet);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $currentVeterinarians = $pet->getVeterinarians()->toArray();

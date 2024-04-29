@@ -97,7 +97,7 @@ class Pet
         return $this->name;
     }
 
-    public function setName(string $name): static
+    public function setName(?string $name): static
     {
         $this->name = $name;
 
@@ -109,7 +109,7 @@ class Pet
         return $this->breed;
     }
 
-    public function setBreed(string $breed): static
+    public function setBreed(?string $breed): static
     {
         $this->breed = $breed;
 
@@ -121,7 +121,7 @@ class Pet
         return $this->color;
     }
 
-    public function setColor(string $color): static
+    public function setColor(?string $color): static
     {
         $this->color = $color;
 

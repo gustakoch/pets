@@ -7,35 +7,13 @@
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
             {{ encore_entry_link_tags('coreui') }}
+
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/css/bootstrap-select.min.css">
         {% endblock %}
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
             {{ encore_entry_script_tags('coreui') }}
 
-            <script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    const popoverTriggerList = document.querySelectorAll('[data-coreui-toggle="popover"]')
-                    const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new coreui.Popover(popoverTriggerEl))
-                    const menuToggle = document.getElementsByClassName("sidebar-toggler")[0];
-                    const menu = document.getElementById("sidebar");
-                    let isMenuToggled = localStorage.getItem("sidebarToggled") === "true";
-                    if (isMenuToggled) {
-                        menu.classList.add("sidebar-narrow-unfoldable");
-                    } else {
-                        menu.classList.remove("sidebar-narrow-unfoldable");
-                    }
-                    menuToggle.addEventListener("click", function() {
-                        menu.classList.toggle("sidebar-narrow-unfoldable");
-                        localStorage.setItem("sidebarToggled", !menu.classList.contains("sidebar-narrow-unfoldable"));
-                        isMenuToggled = localStorage.getItem("sidebarToggled") === "true";
-                        if (isMenuToggled) {
-                            menu.classList.add("sidebar-narrow-unfoldable");
-                        } else {
-                            menu.classList.remove("sidebar-narrow-unfoldable");
-                        }
-                    });
-                });
-            </script>
             <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         {% endblock %}
     </head>
