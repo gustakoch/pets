@@ -6,6 +6,7 @@ use App\Entity\Pet;
 use App\Form\PetType;
 use App\Repository\PetRepository;
 use App\Repository\VeterinarianRepository;
+use App\Service\CacheService;
 use App\Service\UploadService;
 use App\Trait\Pagination;
 use Doctrine\ORM\EntityManagerInterface;
@@ -23,9 +24,12 @@ class PetController extends AbstractController
 {
     use Pagination;
 
+    const CACHED_PETS_QUERY = 'cached_pets_query';
+
     public function __construct(
         private EntityManagerInterface $entityManager,
         private UploadService $uploadService,
+        private CacheService $cacheService,
         private PetRepository $petRepository,
         private VeterinarianRepository $veterinarianRepository,
     ) {
@@ -35,10 +39,9 @@ class PetController extends AbstractController
     public function index(Request $request): Response
     {
         $user = $this->getUser();
-        $pet = new Pet();
-        $form = $this->createForm(PetType::class, $pet);
+        $petsQuery = $this->cacheService->handle(self::CACHED_PETS_QUERY, 'App\Entity\Pet', $user);
+        $form = $this->createForm(PetType::class, new Pet());
         $form->handleRequest($request);
-        $petsQuery = $this->petRepository->getPetsQuery($user);
         if ($form->isSubmitted()) {
             $name = $form->get('name')->getData();
             $specie = $form->get('specie')->getData();
@@ -81,6 +84,7 @@ class PetController extends AbstractController
             $pet->setUser($user);
             $this->entityManager->persist($pet);
             $this->entityManager->flush();
+            $this->cacheService->clearCache(self::CACHED_PETS_QUERY);
             $this->addFlash('petCreated', sprintf('Pet %s cadastrado!', $pet->getName()));
 
             return $this->redirectToRoute('app_pets');
@@ -130,6 +134,7 @@ class PetController extends AbstractController
             $pet->setUpdatedAt(new \DateTime());
             $this->entityManager->persist($pet);
             $this->entityManager->flush();
+            $this->cacheService->clearCache(self::CACHED_PETS_QUERY);
             $this->addFlash('petUpdated', sprintf('Pet %s atualizado!', $pet->getName()));
 
             return $this->redirectToRoute('app_pets');
@@ -165,6 +170,7 @@ class PetController extends AbstractController
         $pet->setDeletedAt(new \DateTime());
         $this->entityManager->persist($pet);
         $this->entityManager->flush();
+        $this->cacheService->clearCache(self::CACHED_PETS_QUERY);
         $this->addFlash('petDeleted', sprintf('Pet %s removido!', $pet->getName()));
 
         return $this->redirectToRoute('app_pets');
