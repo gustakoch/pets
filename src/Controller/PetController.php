@@ -26,6 +26,7 @@ class PetController extends AbstractController
     use Pagination;
 
     const CACHED_PETS_QUERY = 'cached_pets_query_';
+    const ROUTE_APP_PETS = 'app_pets';
 
     public function __construct(
         private EntityManagerInterface $entityManager,
@@ -36,7 +37,7 @@ class PetController extends AbstractController
     ) {
     }
 
-    #[Route('', name: 'app_pets')]
+    #[Route('', name: self::ROUTE_APP_PETS)]
     public function index(Request $request): Response
     {
         /** @var User $user */
@@ -61,7 +62,7 @@ class PetController extends AbstractController
     public function create(Request $request): Response
     {
         $pet = new Pet();
-        $form = $this->createForm(PetType::class, $pet);
+        $form = $this->createForm(PetType::class, $pet, ['validation_groups' => ['create']]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $requestData = $request->request->all();
@@ -90,7 +91,7 @@ class PetController extends AbstractController
             $this->cacheService->clearCache(self::CACHED_PETS_QUERY.$user->getId());
             $this->addFlash('petCreated', sprintf('Pet %s cadastrado!', $pet->getName()));
 
-            return $this->redirectToRoute('app_pets');
+            return $this->redirectToRoute(self::ROUTE_APP_PETS);
         }
 
         return $this->render('pet/create.html.twig', [
@@ -105,7 +106,7 @@ class PetController extends AbstractController
         if (!$pet) {
             throw new AccessDeniedHttpException('Você não tem acesso a essa página');
         }
-        $form = $this->createForm(PetType::class, $pet);
+        $form = $this->createForm(PetType::class, $pet, ['validation_groups' => ['edit']]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $currentVeterinarians = $pet->getVeterinarians()->toArray();
@@ -125,7 +126,7 @@ class PetController extends AbstractController
             }
             /** @var User $user */
             $user = $this->getUser();
-            $imageUploaded = $form->get('imageFile')->getData();
+            $imageUploaded = $form->get('imagePath')->getData();
             if ($imageUploaded) {
                 $pictureFileName = uniqid().'.'.$imageUploaded->guessExtension();
                 $this->uploadService->picture($imageUploaded, '/public/images/pets', $pictureFileName);
@@ -142,7 +143,7 @@ class PetController extends AbstractController
             $this->cacheService->clearCache(self::CACHED_PETS_QUERY.$user->getId());
             $this->addFlash('petUpdated', sprintf('Pet %s atualizado!', $pet->getName()));
 
-            return $this->redirectToRoute('app_pets');
+            return $this->redirectToRoute(self::ROUTE_APP_PETS);
         }
 
         return $this->render('pet/edit.html.twig', [
@@ -162,7 +163,7 @@ class PetController extends AbstractController
         $this->entityManager->persist($pet);
         $this->entityManager->flush();
 
-        return $this->redirectToRoute('app_pets_edit', ['id' => $id]);
+        return $this->redirectToRoute(self::ROUTE_APP_PETS);
     }
 
     #[Route('/{id}/delete', name: 'app_pets_delete')]
@@ -180,7 +181,7 @@ class PetController extends AbstractController
         $this->cacheService->clearCache(self::CACHED_PETS_QUERY.$user->getId());
         $this->addFlash('petDeleted', sprintf('Pet %s removido!', $pet->getName()));
 
-        return $this->redirectToRoute('app_pets');
+        return $this->redirectToRoute(self::ROUTE_APP_PETS);
     }
 
     #[Route('/{id}/show', name: 'app_pets_show')]

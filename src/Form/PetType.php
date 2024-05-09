@@ -54,10 +54,10 @@ class PetType extends AbstractType
                         ->orderBy('s.name', 'ASC');
                 },
             ])
-            ->add('imageFile', FileType::class, [
+            ->add('imagePath', FileType::class, [
                 'required' => false,
                 'label' => 'Selecione uma foto (opcional)',
-                'mapped' => false,
+                'data_class' => null,
                 'empty_data' => '',
             ])
             ->add('veterinarians', EntityType::class, [

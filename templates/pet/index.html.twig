@@ -94,9 +94,17 @@
                                         <tr class="align-middle">
                                             <td class="text-center">
                                                 {% if pet.imagePath %}
-                                                    <div class="avatar avatar-lg">
-                                                        <img class="avatar-on-list" src="{{ pet.imagePath }}" alt="{{ pet.name }}" />
-                                                    </div>
+                                                    <button type="button" class="btn" data-coreui-toggle="modal" data-coreui-target="#petImageDeleteModal{{ pet.id }}" title="Excluir foto do(a) {{ pet.name }}">
+                                                        <div class="avatar avatar-lg">
+                                                            <img class="avatar-on-list" src="{{ pet.imagePath }}" alt="{{ pet.name }}" />
+                                                        </div>
+                                                    </button>
+                                                    {% include 'modals/delete-confirmation-modal.html.twig' with {
+                                                        type: 'petImage',
+                                                        id: pet.id,
+                                                        name: 'a imagem de ' ~ pet.name,
+                                                        deleteRoute: 'app_pets_delete_image'
+                                                    } %}
                                                 {% else %}
                                                     <div class="avatar avatar-lg bg-primary text-white">
                                                         {{ pet.extractFirstTwoInitials(pet.name) }}

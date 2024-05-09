@@ -70,30 +70,17 @@
                         </div>
                         <div class="row">
                             <div class="col-6">
-                                {{ form_label(form.imageFile) }}
-                                {{ form_widget(form.imageFile, { 'attr': { 'class': 'form-control mt-1', 'placeholder': 'imageFile' } }) }}
+                                {{ form_label(form.imagePath) }}
+                                {{ form_widget(form.imagePath, { 'attr': { 'class': 'form-control mt-1', 'placeholder': 'imageFile' } }) }}
+                                <div class="form-error text-danger mt-1">
+                                    {{ form_errors(form.imagePath) }}
+                                </div>
                             </div>
                             <div class="col-6">
                                 {{ form_label(form.veterinarians) }}
                                 {{ form_widget(form.veterinarians, {'attr': { 'class': 'form-control selectpicker mt-1', 'data-live-search': true, 'data-actions-box': true, 'placeholder': '-' } }) }}
                             </div>
                         </div>
-                        {% if pet.imagePath %}
-                            <div class="row mt-3">
-                                <div class="col">
-                                    <img class="img-thumbnail mb-2 height-200" src="{{ pet.imagePath }}" alt="{{ pet.name }}" />
-                                    <button type="button" class="btn btn-sm btn-danger" data-coreui-toggle="modal" data-coreui-target="#petImageDeleteModal{{ pet.id }}" title="Remover imagem">
-                                        <svg class="icon text-white" version="1.1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M4.5 22.125c-0 0.003-0 0.006-0 0.008 0 0.613 0.494 1.11 1.105 1.116h12.79c0.612-0.006 1.105-0.504 1.105-1.117 0-0.003-0-0.006-0-0.009v0-15h-15zM6 8.625h12v13.125h-12z"></path><path d="M7.875 10.125h1.5v9.375h-1.5v-9.375z"></path><path d="M11.25 10.125h1.5v9.375h-1.5v-9.375z"></path><path d="M14.625 10.125h1.5v9.375h-1.5v-9.375z"></path><path d="M15.375 4.125v-2.25c0-0.631-0.445-1.125-1.013-1.125h-4.725c-0.568 0-1.013 0.494-1.013 1.125v2.25h-5.625v1.5h18v-1.5zM10.125 2.25h3.75v1.875h-3.75z"></path></svg>
-                                    </button>
-                                </div>
-                            </div>
-                            {% include 'modals/delete-confirmation-modal.html.twig' with {
-                                type: 'petImage',
-                                id: pet.id,
-                                name: 'a imagem da ' ~ pet.name,
-                                deleteRoute: 'app_pets_delete_image'
-                            } %}
-                        {% endif %}
 
                         <div class="mt-3">
                             <button class="btn btn-primary me-2" type="submit">Atualizar pet</button>

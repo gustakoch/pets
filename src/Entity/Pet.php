@@ -26,29 +26,34 @@ class Pet
     private ?User $user = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: 'pet.name.not_blank')]
+    #[Assert\NotBlank(message: 'pet.name.not_blank', groups: ['create', 'edit'])]
     #[Assert\Length(min: 3, minMessage: 'pet.name.min_length')]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: 'pet.breed.not_blank')]
+    #[Assert\NotBlank(message: 'pet.breed.not_blank', groups: ['create', 'edit'])]
     private ?string $breed = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: 'pet.color.not_blank')]
+    #[Assert\NotBlank(message: 'pet.color.not_blank', groups: ['create', 'edit'])]
     private ?string $color = null;
 
     #[ORM\ManyToOne(inversedBy: 'pets')]
-    #[Assert\NotBlank(message: 'pet.specie.not_blank')]
+    #[Assert\NotBlank(message: 'pet.specie.not_blank', groups: ['create', 'edit'])]
     private ?Specie $specie = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    #[Assert\NotBlank(message: 'pet.date_of_birth.not_blank')]
+    #[Assert\NotBlank(message: 'pet.date_of_birth.not_blank', groups: ['create', 'edit'])]
     private ?\DateTimeInterface $dateOfBirth = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\Image()]
-    #[Assert\File(groups: ['create'])]
+    #[Assert\File(
+        maxSize: '1024k',
+        mimeTypes: ['image/jpeg', 'image/png', 'image/gif'],
+        mimeTypesMessage: 'Imagem inválida selecionada! Por favor, tente novamente',
+        groups: ['create', 'edit']
+    )]
     private ?string $imagePath = null;
 
     #[ORM\ManyToMany(targetEntity: Veterinarian::class, inversedBy: 'pets')]
