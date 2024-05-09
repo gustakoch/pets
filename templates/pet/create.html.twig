@@ -69,8 +69,11 @@
                         </div>
                         <div class="row">
                             <div class="col-6">
-                                {{ form_label(form.imageFile) }}
-                                {{ form_widget(form.imageFile, { 'attr': { 'class': 'form-control mt-1', 'placeholder': 'imageFile' } }) }}
+                                {{ form_label(form.imagePath) }}
+                                {{ form_widget(form.imagePath, { 'attr': { 'class': 'form-control mt-1', 'placeholder': 'imagePath' } }) }}
+                                <div class="form-error text-danger mt-1">
+                                    {{ form_errors(form.imagePath) }}
+                                </div>
                             </div>
                             <div class="col-6">
                                 {{ form_label(form.veterinarians) }}
