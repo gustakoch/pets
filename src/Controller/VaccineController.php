@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Vaccine;
+use App\Entity\User;
 use App\Form\VaccineType;
 use App\Manager\VaccineManager;
 use App\Repository\VaccineRepository;
+use App\Service\CacheService;
 use App\Trait\Pagination;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,22 +24,25 @@ class VaccineController extends AbstractController
     use Pagination;
 
     public const ROUTE_APP_VACCINES = 'app_vaccines';
+    public const CACHED_VACCINES_QUERY = 'cached_vaccines_query_';
 
     public function __construct(
         private VaccineRepository $vaccineRepository,
         private EntityManagerInterface $entityManager,
         private VaccineManager $vaccineManager,
+        private CacheService $cacheService,
     ) {
     }
 
     #[Route('', name: self::ROUTE_APP_VACCINES)]
     public function index(Request $request): Response
     {
+        /** @var User $user */
         $user = $this->getUser();
         $vaccine = new Vaccine();
         $form = $this->createForm(VaccineType::class, $vaccine);
         $form->handleRequest($request);
-        $vaccinesQuery = $this->vaccineRepository->getVaccinesQuery($user);
+        $vaccinesQuery = $this->cacheService->handle(self::CACHED_VACCINES_QUERY.$user->getId(), 'App\Entity\Vaccine', $user);
         if ($form->isSubmitted()) {
             $name = $form->get('name')->getData();
             $type = $form->get('type')->getData();
@@ -58,11 +63,13 @@ class VaccineController extends AbstractController
         $form = $this->createForm(VaccineType::class, $vaccine);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var User $user */
             $user = $this->getUser();
             $vaccine = $form->getData();
             $vaccine->setUser($user);
             $this->entityManager->persist($vaccine);
             $this->entityManager->flush();
+            $this->cacheService->clearCache(self::CACHED_VACCINES_QUERY.$user->getId());
             $this->addFlash('vaccineCreated', sprintf('Vacina %s cadastrada!', $vaccine->getName()));
 
             return $this->redirectToRoute(self::ROUTE_APP_VACCINES);
@@ -90,6 +97,7 @@ class VaccineController extends AbstractController
     #[Route('/{id}/edit', name: 'app_vaccines_edit')]
     public function edit(Request $request, $id): Response
     {
+        /** @var User $user */
         $user = $this->getUser();
         $vaccine = $this->vaccineRepository->getVaccineInfo($id, $user);
         if (!$vaccine) {
@@ -102,6 +110,7 @@ class VaccineController extends AbstractController
             $vaccine->setUpdatedAt(new \DateTime());
             $this->entityManager->persist($vaccine);
             $this->entityManager->flush();
+            $this->cacheService->clearCache(self::CACHED_VACCINES_QUERY.$user->getId());
             $this->addFlash('vaccineUpdated', sprintf('Vacina %s atualizada!', $vaccine->getName()));
 
             return $this->redirectToRoute(self::ROUTE_APP_VACCINES);
@@ -120,9 +129,12 @@ class VaccineController extends AbstractController
         if (!$vaccine) {
             throw new AccessDeniedHttpException('Você não tem acesso a essa página');
         }
+        /** @var User $user */
+        $user = $this->getUser();
         $vaccine->setDeletedAt(new \DateTime());
         $this->entityManager->persist($vaccine);
         $this->entityManager->flush();
+        $this->cacheService->clearCache(self::CACHED_VACCINES_QUERY.$user->getId());
         $this->addFlash('vaccineDeleted', sprintf('Vacina %s removida!', $vaccine->getName()));
 
         return $this->redirectToRoute(self::ROUTE_APP_VACCINES);

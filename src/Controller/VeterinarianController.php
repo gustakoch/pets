@@ -3,12 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Address;
+use App\Entity\User;
 use App\Entity\Veterinarian;
 use App\Form\AddressType;
 use App\Form\VeterinarianType;
 use App\Repository\AddressRepository;
 use App\Repository\CityRepository;
 use App\Repository\VeterinarianRepository;
+use App\Service\CacheService;
 use App\Trait\Pagination;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,22 +25,26 @@ class VeterinarianController extends AbstractController
 {
     use Pagination;
 
+    public const CACHED_VETS_QUERY = 'cached_vets_query_';
+
     public function __construct(
         private VeterinarianRepository $veterinarianRepository,
         private CityRepository $cityRepository,
         private AddressRepository $addressRepository,
         private EntityManagerInterface $entityManager,
+        private CacheService $cacheService,
     ) {
     }
 
     #[Route('/veterinarians', name: 'app_vets')]
     public function index(Request $request): Response
     {
+        /** @var User $user */
         $user = $this->getUser();
         $veterinarian = new Veterinarian();
         $form = $this->createForm(VeterinarianType::class, $veterinarian);
         $form->handleRequest($request);
-        $vetsQuery = $this->veterinarianRepository->getVetsByUserQuery($user);
+        $vetsQuery = $this->cacheService->handle(self::CACHED_VETS_QUERY.$user->getId(), 'App\Entity\Veterinarian', $user);
         if ($form->isSubmitted()) {
             $name = $form->get('name')->getData();
             $vetsQuery = $this->veterinarianRepository->getVetsByUserQuery($user, $name);
@@ -68,6 +74,7 @@ class VeterinarianController extends AbstractController
                 $city = $this->cityRepository->find((int) $requestData['city']);
                 $address->setCity($city);
             }
+            /** @var User $user */
             $user = $this->getUser();
             $veterinarian = $form->getData()['veterinarian'];
             $veterinarian->setAddress($address);
@@ -75,6 +82,7 @@ class VeterinarianController extends AbstractController
             $this->entityManager->persist($address);
             $this->entityManager->persist($veterinarian);
             $this->entityManager->flush();
+            $this->cacheService->clearCache(self::CACHED_VETS_QUERY.$user->getId());
             $this->addFlash('vetCreated', sprintf('Veterinário %s cadastrado!', $veterinarian->getName()));
 
             return $this->redirectToRoute('app_vets');
@@ -99,6 +107,8 @@ class VeterinarianController extends AbstractController
             ->getForm();
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var User $user */
+            $user = $this->getUser();
             $address = $form->getData()['address'];
             $requestData = $request->request->all();
             $city = $this->cityRepository->find((int) $requestData['city']);
@@ -109,6 +119,7 @@ class VeterinarianController extends AbstractController
             $this->entityManager->persist($address);
             $this->entityManager->persist($veterinarian);
             $this->entityManager->flush();
+            $this->cacheService->clearCache(self::CACHED_VETS_QUERY.$user->getId());
             $this->addFlash('vetUpdated', sprintf('Veterinário %s atualizado!', $veterinarian->getName()));
 
             return $this->redirectToRoute('app_vets');
@@ -135,6 +146,8 @@ class VeterinarianController extends AbstractController
     #[Route('/veterinarians/{id}/delete', name: 'app_vets_delete')]
     public function detele($id): Response
     {
+        /** @var User $user */
+        $user = $this->getUser();
         $veterinarian = $this->veterinarianRepository->findOneBy(['id' => $id, 'user' => $this->getUser()]);
         if (!$veterinarian) {
             throw new AccessDeniedHttpException('Você não tem acesso a essa página!');
@@ -142,6 +155,7 @@ class VeterinarianController extends AbstractController
         $veterinarian->setDeletedAt(new \DateTime());
         $this->entityManager->persist($veterinarian);
         $this->entityManager->flush();
+        $this->cacheService->clearCache(self::CACHED_VETS_QUERY.$user->getId());
         $this->addFlash('vetDeleted', sprintf('Veterinário %s removido!', $veterinarian->getName()));
 
         return $this->redirectToRoute('app_vets');

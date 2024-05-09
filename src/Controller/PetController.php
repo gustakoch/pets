@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Pet;
+use App\Entity\User;
 use App\Form\PetType;
 use App\Repository\PetRepository;
 use App\Repository\VeterinarianRepository;
@@ -24,7 +25,7 @@ class PetController extends AbstractController
 {
     use Pagination;
 
-    const CACHED_PETS_QUERY = 'cached_pets_query';
+    const CACHED_PETS_QUERY = 'cached_pets_query_';
 
     public function __construct(
         private EntityManagerInterface $entityManager,
@@ -38,8 +39,9 @@ class PetController extends AbstractController
     #[Route('', name: 'app_pets')]
     public function index(Request $request): Response
     {
+        /** @var User $user */
         $user = $this->getUser();
-        $petsQuery = $this->cacheService->handle(self::CACHED_PETS_QUERY, 'App\Entity\Pet', $user);
+        $petsQuery = $this->cacheService->handle(self::CACHED_PETS_QUERY.$user->getId(), 'App\Entity\Pet', $user);
         $form = $this->createForm(PetType::class, new Pet());
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
@@ -69,6 +71,7 @@ class PetController extends AbstractController
                     $pet->addVeterinarian($veterinarian);
                 }
             }
+            /** @var User $user */
             $user = $this->getUser();
             $imageUploaded = $form->get('imageFile')->getData();
             if ($imageUploaded) {
@@ -84,7 +87,7 @@ class PetController extends AbstractController
             $pet->setUser($user);
             $this->entityManager->persist($pet);
             $this->entityManager->flush();
-            $this->cacheService->clearCache(self::CACHED_PETS_QUERY);
+            $this->cacheService->clearCache(self::CACHED_PETS_QUERY.$user->getId());
             $this->addFlash('petCreated', sprintf('Pet %s cadastrado!', $pet->getName()));
 
             return $this->redirectToRoute('app_pets');
@@ -120,6 +123,8 @@ class PetController extends AbstractController
                     }
                 }
             }
+            /** @var User $user */
+            $user = $this->getUser();
             $imageUploaded = $form->get('imageFile')->getData();
             if ($imageUploaded) {
                 $pictureFileName = uniqid().'.'.$imageUploaded->guessExtension();
@@ -134,7 +139,7 @@ class PetController extends AbstractController
             $pet->setUpdatedAt(new \DateTime());
             $this->entityManager->persist($pet);
             $this->entityManager->flush();
-            $this->cacheService->clearCache(self::CACHED_PETS_QUERY);
+            $this->cacheService->clearCache(self::CACHED_PETS_QUERY.$user->getId());
             $this->addFlash('petUpdated', sprintf('Pet %s atualizado!', $pet->getName()));
 
             return $this->redirectToRoute('app_pets');
@@ -163,6 +168,8 @@ class PetController extends AbstractController
     #[Route('/{id}/delete', name: 'app_pets_delete')]
     public function detele($id): Response
     {
+        /** @var User $user */
+        $user = $this->getUser();
         $pet = $this->petRepository->findOneBy(['id' => $id, 'user' => $this->getUser()]);
         if (!$pet) {
             throw new AccessDeniedHttpException('Você não tem acesso a essa página');
@@ -170,7 +177,7 @@ class PetController extends AbstractController
         $pet->setDeletedAt(new \DateTime());
         $this->entityManager->persist($pet);
         $this->entityManager->flush();
-        $this->cacheService->clearCache(self::CACHED_PETS_QUERY);
+        $this->cacheService->clearCache(self::CACHED_PETS_QUERY.$user->getId());
         $this->addFlash('petDeleted', sprintf('Pet %s removido!', $pet->getName()));
 
         return $this->redirectToRoute('app_pets');
