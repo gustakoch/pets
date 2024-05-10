@@ -65,4 +65,14 @@ class PetRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    public function getImagePath(Pet $pet): ?string
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p.imagePath')
+            ->andWhere('p = :pet')
+            ->setParameter('pet', $pet)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }

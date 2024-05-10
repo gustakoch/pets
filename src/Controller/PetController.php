@@ -126,11 +126,14 @@ class PetController extends AbstractController
             }
             /** @var User $user */
             $user = $this->getUser();
+            $petImage = $this->petRepository->getImagePath($pet);
             $imageUploaded = $form->get('imagePath')->getData();
-            if ($imageUploaded) {
+            if (!$petImage && $imageUploaded) {
                 $pictureFileName = uniqid().'.'.$imageUploaded->guessExtension();
                 $this->uploadService->picture($imageUploaded, '/public/images/pets', $pictureFileName);
                 $pet->setImagePath('/images/pets/'.$pictureFileName);
+            } else {
+                $pet->setImagePath($petImage);
             }
             $pet->setName($form->get('name')->getData());
             $pet->setSpecie($form->get('specie')->getData());
