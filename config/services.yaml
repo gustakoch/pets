@@ -8,6 +8,7 @@ parameters:
     via_cep_url: '%env(VIA_CEP_URL)%'
     telegram_api_key: '%env(MONOLOG_TELEFRAM_API_KEY)%'
     telegram_channel: '%env(MONOLOG_TELEFRAM_CHANNEL)%'
+    app_env: '%env(APP_ENV)%'
 
 services:
     # default configuration for services in *this* file

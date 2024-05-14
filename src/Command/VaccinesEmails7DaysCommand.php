@@ -12,6 +12,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 #[AsCommand(name: 'app:vaccines-emails-7-days', description: 'Sends emails to users with vaccines expiring within the next 7 days')]
@@ -22,6 +23,7 @@ class VaccinesEmails7DaysCommand extends Command
         private readonly VaccineManager $vaccineManager,
         private readonly EmailVaccineRepository $emailVaccineRepository,
         private readonly UrlGeneratorInterface $urlGeneratorInterface,
+        private readonly ContainerBagInterface $containerBag,
     ) {
         parent::__construct();
     }
@@ -30,8 +32,12 @@ class VaccinesEmails7DaysCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
         $groupedVaccinesByUser = $this->vaccineManager->getVaccinesNext7DaysGroupedByUser();
-        $loginUrl = $this->urlGeneratorInterface->generate('app_login', [], UrlGeneratorInterface::ABSOLUTE_URL);
         $countEmailsSent = 0;
+        if ('dev' === $this->containerBag->get('app_env')) {
+            $loginUrl = $this->urlGeneratorInterface->generate('app_login', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        } else {
+            $loginUrl = 'https://pets.gustakoch.com.br/login';
+        }
         foreach ($groupedVaccinesByUser as $groupVaccine) {
             $user = $groupVaccine['user'];
             $vaccines = $groupVaccine['vaccines'];
