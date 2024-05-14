@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\PasswordReset;
 use App\Entity\User;
+use App\Enum\LevelEnum;
 use Firebase\JWT\ExpiredException;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
@@ -12,8 +13,11 @@ class TokenService
 {
     public const ALGORITHM = 'HS256';
 
-    public function __construct(private string $secretKey)
-    {
+    public function __construct(
+        private string $secretKey,
+        private readonly LoggerService $loggerService,
+    ) {
+        $this->loggerService->setLoggerChannel('token');
     }
 
     public function encode(array $payload): string
@@ -29,6 +33,8 @@ class TokenService
 
             return $decodedArray;
         } catch (ExpiredException $e) {
+            $this->loggerService->setLog(LevelEnum::Info, $e->getMessage(), ['token' => $token]);
+
             return [
                 'error' => true,
                 'message' => 'Token expirado',

@@ -56,7 +56,15 @@ class HomeController extends AbstractController
             $this->addFlash('userCreated', 'Parabéns! Sua conta foi criada com sucesso :)');
 
             $activationLink = $this->generateUrl('app_activate_account', ['token' => $user->getActivationToken()], UrlGeneratorInterface::ABSOLUTE_URL);
-            $this->emailService->sendActivationEmail($user, $activationLink);
+            $this->emailService->sendTemplatedEmail(
+                'emails/activate-account.html.twig',
+                $user->getEmail(),
+                'PetsControl - Ative sua conta',
+                [
+                    'activationLink' => $activationLink,
+                    'user' => $user,
+                ]
+            );
 
             return $this->redirectToRoute('app_register', [
                 'email' => $user->getEmail(),

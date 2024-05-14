@@ -4,9 +4,11 @@ namespace App\Manager;
 
 use App\Entity\City;
 use App\Entity\State;
+use App\Enum\LevelEnum;
 use App\Repository\CityRepository;
 use App\Repository\StateRepository;
 use App\Service\JsonService;
+use App\Service\LoggerService;
 use App\Service\ViaCepService;
 
 class AddressManager
@@ -15,7 +17,9 @@ class AddressManager
         private StateRepository $stateRepository,
         private CityRepository $cityRepository,
         private ViaCepService $viaCepService,
+        private readonly LoggerService $loggerService,
     ) {
+        $this->loggerService->setLoggerChannel('address');
     }
 
     public function getCitiesByStateId($stateId = null): array
@@ -29,6 +33,8 @@ class AddressManager
 
             return JsonService::response(false, '', $cities);
         } catch (\Exception $e) {
+            $this->loggerService->setLog(LevelEnum::Info, $e->getMessage(), ['state' => $state]);
+
             return JsonService::response(true, $e->getMessage(), []);
         }
     }
@@ -69,6 +75,8 @@ class AddressManager
 
             return JsonService::response(false, '', $data);
         } catch (\Exception $e) {
+            $this->loggerService->setLog(LevelEnum::Info, $e->getMessage(), ['zipcode' => $zipcode]);
+
             return JsonService::response(true, $e->getMessage(), []);
         }
     }

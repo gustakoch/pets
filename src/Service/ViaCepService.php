@@ -2,12 +2,16 @@
 
 namespace App\Service;
 
+use App\Enum\LevelEnum;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 
 class ViaCepService
 {
-    public function __construct(private ContainerBagInterface $containerBag)
-    {
+    public function __construct(
+        private ContainerBagInterface $containerBag,
+        private readonly LoggerService $loggerService,
+    ) {
+        $this->loggerService->setLoggerChannel('viacepservice');
     }
 
     public function getZipCodeInfo(?string $zipcode = null): array
@@ -33,6 +37,8 @@ class ViaCepService
 
             return JsonService::response(false, '', $data);
         } catch (\Exception $e) {
+            $this->loggerService->setLog(LevelEnum::Info, $e->getMessage(), ['zipcode' => $zipcode]);
+
             return JsonService::response(true, $e->getMessage(), []);
         }
     }

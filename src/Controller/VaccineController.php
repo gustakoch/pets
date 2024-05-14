@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\Vaccine;
 use App\Entity\User;
+use App\Entity\Vaccine;
 use App\Form\VaccineType;
 use App\Manager\VaccineManager;
 use App\Repository\VaccineRepository;

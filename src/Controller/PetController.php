@@ -4,10 +4,12 @@ namespace App\Controller;
 
 use App\Entity\Pet;
 use App\Entity\User;
+use App\Enum\LevelEnum;
 use App\Form\PetType;
 use App\Repository\PetRepository;
 use App\Repository\VeterinarianRepository;
 use App\Service\CacheService;
+use App\Service\LoggerService;
 use App\Service\UploadService;
 use App\Trait\Pagination;
 use Doctrine\ORM\EntityManagerInterface;
@@ -25,8 +27,8 @@ class PetController extends AbstractController
 {
     use Pagination;
 
-    const CACHED_PETS_QUERY = 'cached_pets_query_';
-    const ROUTE_APP_PETS = 'app_pets';
+    public const CACHED_PETS_QUERY = 'cached_pets_query_';
+    public const ROUTE_APP_PETS = 'app_pets';
 
     public function __construct(
         private EntityManagerInterface $entityManager,
@@ -34,7 +36,9 @@ class PetController extends AbstractController
         private CacheService $cacheService,
         private PetRepository $petRepository,
         private VeterinarianRepository $veterinarianRepository,
+        private readonly LoggerService $loggerService,
     ) {
+        $this->loggerService->setLoggerChannel('pet');
     }
 
     #[Route('', name: self::ROUTE_APP_PETS)]
@@ -221,6 +225,8 @@ class PetController extends AbstractController
                 'data' => $veterinariansData,
             ]);
         } catch (\Exception $e) {
+            $this->loggerService->setLog(LevelEnum::Info, $e->getMessage(), ['pet' => $pet]);
+
             return $this->json([
                 'ok' => false,
                 'message' => $e->getMessage(),

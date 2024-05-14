@@ -6,6 +6,8 @@
 parameters:
     email_sender_user: '%env(EMAIL_SENDER_USER)%'
     via_cep_url: '%env(VIA_CEP_URL)%'
+    telegram_api_key: '%env(MONOLOG_TELEFRAM_API_KEY)%'
+    telegram_channel: '%env(MONOLOG_TELEFRAM_CHANNEL)%'
 
 services:
     # default configuration for services in *this* file

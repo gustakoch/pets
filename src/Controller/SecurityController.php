@@ -123,7 +123,15 @@ class SecurityController extends AbstractController
                 ],
                 UrlGeneratorInterface::ABSOLUTE_URL
             );
-            $this->emailService->sendPasswordResetEmail($user, $resetLink);
+            $this->emailService->sendTemplatedEmail(
+                'emails/reset-password.html.twig',
+                $user->getEmail(),
+                'PetsControl - Redefinição de senha',
+                [
+                    'resetLink' => $resetLink,
+                    'user' => $user,
+                ]
+            );
             $this->addFlash('resetPasswordSent', 'Verifique seu e-mail!');
 
             return $this->redirectToRoute('app_forgot_password');
@@ -176,7 +184,14 @@ class SecurityController extends AbstractController
             $passwordReset->setUsedAt(new \DateTime());
             $this->entityManager->persist($user);
             $this->entityManager->flush();
-            $this->emailService->sendPasswordResetConfirmationEmail($user);
+            $this->emailService->sendTemplatedEmail(
+                'emails/reset-password-confirmation.html.twig',
+                $user->getEmail(),
+                'PetsControl - Senha redefinida com sucesso',
+                [
+                    'user' => $user,
+                ]
+            );
             $this->addFlash('passwordUpdated', 'Sua senha foi redefinida com sucesso!');
 
             return $this->redirectToRoute(self::ROUTE_LOGIN);
