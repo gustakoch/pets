@@ -78,7 +78,7 @@ class PetController extends AbstractController
             }
             /** @var User $user */
             $user = $this->getUser();
-            $imageUploaded = $form->get('imageFile')->getData();
+            $imageUploaded = $form->get('imagePath')->getData();
             if ($imageUploaded) {
                 $pictureFileName = uniqid().'.'.$imageUploaded->guessExtension();
                 $this->uploadService->picture($imageUploaded, '/public/images/pets', $pictureFileName);
